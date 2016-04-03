@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">WEiTI map</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="nav_bar_intro1">WEiTI Map</string>
+    <string name="nav_var_intro2">created by Jakub Kolada</string>
+</resources>

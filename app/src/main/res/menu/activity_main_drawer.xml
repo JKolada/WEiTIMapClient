@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/arrow_up"
+            android:icon="@drawable/arrow_up"
+            android:title="Higher floor" />
+        <item
+            android:id="@+id/arrow_down"
+            android:icon="@drawable/arrow_down"
+            android:title="Lower floor" />
+        <item
+            android:id="@+id/plan_icon"
+            android:icon="@drawable/plan_icon"
+            android:title="Timetable" />
+    </group>
+
+    <item android:title="CHUJÓW STO">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="NOPELAND" />
+        </menu>
+    </item>
+
+</menu>
