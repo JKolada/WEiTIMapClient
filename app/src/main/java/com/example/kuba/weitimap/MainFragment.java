@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 /**
@@ -15,8 +16,10 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 public class MainFragment extends Fragment {
 
     private static MainActivity mainActivity;
-    private SubsamplingScaleImageView SubImageView;
+//    private SubsamplingScaleImageView SubImageView;
     private FrameLayout frameLayout;
+
+//    SubsamplingScaleImageView SubImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,14 +34,28 @@ public class MainFragment extends Fragment {
 //        FrameLayout mImageView = inflater.inflate(R.layout.fragment_map_list, container, false);
 //        getView().findViewById(R.id.subsamplingscale_image);
 
-        frameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_map_list, container, false);
-//        SubsamplingScaleImageView SubImageView = (SubsamplingScaleImageView) getView().findViewById(R.id.subsamplingscale_image);
+        View frameLayout = inflater.inflate(R.layout.fragment_map_list, container, false);
+        final SubsamplingScaleImageView SubImageView = (SubsamplingScaleImageView) frameLayout.findViewById(R.id.subsamplingscale_image);
+
 //        SubImageView = (SubsamplingScaleImageView) inflater.inflate(R.id.subsamplingscale_image, container, false);
 //        SubImageView.setImage(ImageSource.resource(R.drawable.temp));
 //        setupSubLayout(SubImageView);
-//        SubImageView.setImage(ImageSource.asset("temp.png"));
+        String floor_name = this.getArguments().getString("floor_name");
+        SubImageView.setImage(ImageSource.asset(floor_name));
+//
+//        switch (floor_name) {
+//            case mainActivity.FLOOR_NAMES[0]:
+//                SubImageView.setImage(ImageSource.resource(R.drawable.piwnica));
+//
+//            default:
+//
+//        }
+//
+////        SubImageView.setImage(ImageSource.resource(R.drawable.piwnica));
+//        SubImageView.setImage(ImageSource.asset("piwnica.jpg"));
 
-        return SubImageView;
+        return frameLayout;
+
     }
 
     private void setupSubLayout(SubsamplingScaleImageView frameLaSubImageViewyout) {

@@ -13,14 +13,4 @@
     tools:showIn="@layout/app_bar_main"
     tools:context="com.example.kuba.weitimap.MainActivity">
 
-    <TextView
-        android:text="SIEEMA!"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
 </RelativeLayout>

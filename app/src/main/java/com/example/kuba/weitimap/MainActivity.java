@@ -1,5 +1,7 @@
 package com.example.kuba.weitimap;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,9 +23,18 @@ import java.util.List;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    final int MAP_COUNT = 7; // {-1, 0, 1, 2, 3, 4, 5}
+    final public int MAP_COUNT = 7; // {-1, 0, 1, 2, 3, 4, 5}
+    final public String[] FLOOR_MAP_NAMES =
+                                    {"piwnica.jpg",
+                                    "parter.jpg",
+                                    "pietro1.jpg",
+                                    "pietro2.jpg",
+                                    "pietro3.jpg",
+                                    "pietro4.jpg",
+                                    "pietro5.jpg"};
     DrawerLayout mDrawerLayout;
 
     PhotoViewAttacher mAttacher;
@@ -120,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < MAP_COUNT; i++) {
             fragment = new MainFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("type", i+1);
+            bundle.putString("floor_name", FLOOR_MAP_NAMES[i]);
             fragment.setArguments(bundle);
-            adapter.addFragment(fragment, Integer.toString(i - 1));
+            adapter.addFragment(fragment, Integer.toString(i-1));
             fragment = new MainFragment();
         }
 
@@ -134,10 +145,11 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                        mDrawerLayout.closeDrawers();
+                        mDrawerLayout.closeDrawers();
+
 //                        if (menuItem.getItemId() == R.id.nav_viewpager) {
-//                            Intent intent = new Intent(MainActivity.this, ViewPagerActivity.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(MainActivity.this, TimetableActivity.class);
+                            startActivity(intent);
 //                        } else if (menuItem.getItemId() == R.id.nav_subsamplingScale) {
 //                            Intent intent = new Intent(MainActivity.this, SubsamplingScaleActivity.class);
 //                            startActivity(intent);
