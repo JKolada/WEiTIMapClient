@@ -1,145 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/timetable_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAlignment="center"
-        android:text="Timetable"
-        android:stretchColumns="1"/>
-
-    <TableLayout
-        android:id="@+id/timetable_layout"
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAlignment="center"
-        android:text="Timetable"
-        android:stretchColumns="1">
+        android:fitsSystemWindows="true"
+        tools:context="com.example.kuba.weitimap.TimetableActivity">
 
-        <TableRow
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs_timetable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_timetable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="1dp">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Mon"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Tue"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Wed"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Thu"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Fri"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-        </TableRow>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <!-- -->
+        <!--<include layout="@layout/content_main"/>-->
 
-        <View
-            android:layout_height="2dip"
-            android:background="#FF909090" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_timetable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/arrow_vertical" />
 
-        <!--<TableRow-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:padding="1dp">-->
-
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="8-10"-->
-                <!--android:padding="1dp"-->
-                <!--android:layout_weight="1"/>-->
-            <!--<TextView-->
-
-                <!--android:id="@+id/plan_p_1x1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:padding="1dp"-->
-                <!--android:layout_weight="1"/>-->
-            <!--<TextView-->
-
-                <!--android:id="@+id/plan_p_1x2"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:padding="1dp"-->
-                <!--android:layout_weight="1"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/plan_p_1x3"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:padding="1dp"-->
-                <!--android:layout_weight="1"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/plan_p_1x4"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:padding="1dp"-->
-                <!--android:layout_weight="1"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/plan_p_1x5"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:padding="1dp"-->
-                <!--android:layout_weight="1"/>-->
-        <!--</TableRow>-->
-
-
-
-
-    </TableLayout>
-
-
-
-
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-
-
-
-
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

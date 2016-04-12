@@ -26,15 +26,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MainActivity extends AppCompatActivity {
 
-    final public int MAP_COUNT = 7; // {-1, 0, 1, 2, 3, 4, 5}
-    final public String[] FLOOR_MAP_NAMES =
-                                    {"piwnica.jpg",
-                                    "parter.jpg",
-                                    "pietro1.jpg",
-                                    "pietro2.jpg",
-                                    "pietro3.jpg",
-                                    "pietro4.jpg",
-                                    "pietro5.jpg"};
     DrawerLayout mDrawerLayout;
 
     PhotoViewAttacher mAttacher;
@@ -68,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //            this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -117,7 +109,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+        if (item.getItemId() == android.R.id.home) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
 
@@ -127,11 +123,11 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         MainFragment fragment;
-
-        for (int i = 0; i < MAP_COUNT; i++) {
+String imie = new String("asda");
+        for (int i = 0; i < MyAndUtils.MAP_COUNT; i++) {
             fragment = new MainFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("floor_name", FLOOR_MAP_NAMES[i]);
+            bundle.putString("floor_name", MyAndUtils.FLOOR_MAP_NAMES[i]);
             fragment.setArguments(bundle);
             adapter.addFragment(fragment, Integer.toString(i-1));
             fragment = new MainFragment();
