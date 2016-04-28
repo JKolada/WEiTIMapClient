@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * Created by Kuba on 2016-04-12.
@@ -33,21 +34,34 @@ public class ScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View timetable_even, timetable_odd;
+        View timetable;
 
         if (mParity == null) {
             return null;
         } else {
             switch (mParity) {
                 case EVEN_WEEK:
-                    timetable_even = inflater.inflate(R.layout.fragment_timetable_even, container, false);
-                    return timetable_even;
-
-                case ODD_WEEK:
-                     timetable_odd = inflater.inflate(R.layout.fragment_timetable_odd, container, false);
-                    return timetable_odd;
+                    timetable = inflater.inflate(R.layout.fragment_timetable_even, container, false);
+                    break;
+                default:
+                    timetable = inflater.inflate(R.layout.fragment_timetable_odd, container, false);
+                    break;
             }
         }
-        return null;
+
+        final TextView plan_p_1x1 = (TextView) timetable.findViewById(R.id.plan_p_1x1);
+        plan_p_1x1.setOnClickListener(new View.OnClickListener() {
+            int clicked = 0;
+            @Override
+            public void onClick(View v) {
+                clicked++;
+                plan_p_1x1.setText("clicked " + clicked + " times");
+            }
+        });
+
+
+        return timetable;
     }
+
+
 }

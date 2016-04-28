@@ -61,6 +61,11 @@
                 android:layout_weight="1"/>
         </TableRow>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +78,11 @@
                 android:padding="1dp"
                 android:layout_weight="1"/>
 
+
             <TextView
+
+
+                android:text="PPOM W 133"
                 android:id="@+id/plan_p_1x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

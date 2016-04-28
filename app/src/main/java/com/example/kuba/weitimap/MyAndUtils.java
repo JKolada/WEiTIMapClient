@@ -1,17 +1,15 @@
 package com.example.kuba.weitimap;
 
-/**
- * Created by Kuba on 2016-04-12.
- */
 public class MyAndUtils {
+    public final static String DOWNLOAD_NAME = "DOWNLOAD_PAGE";
+
     public enum parity {
         EVEN_WEEK, ODD_WEEK;
-
-        @Override
-        public String toString() {
-            return name().toLowerCase();
-        }
     }
+
+    public final static String SERVER_DEFAULT_IP = "192.168.0.42";
+    public final static String SERVER_DEFAULT_PORT = "13131";
+
 
 //        public getScheduleResId(parity p, int row, int column
 //        {

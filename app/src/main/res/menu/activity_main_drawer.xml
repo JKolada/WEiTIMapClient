@@ -4,25 +4,30 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/arrow_up"
-            android:icon="@drawable/arrow_up"
-            android:title="Higher floor" />
+            android:icon="@drawable/location_red"
+            android:title="Tu bedzie info na temat czerwonego znacznika" />
         <item
             android:id="@+id/arrow_down"
-            android:icon="@drawable/arrow_down"
-            android:title="Lower floor" />
+            android:icon="@drawable/location_blue"
+            android:title="a tu na temat nebeskego" />
         <item
             android:id="@+id/plan_icon"
             android:icon="@drawable/plan_icon"
             android:title="Timetable" />
+        <item
+            android:id="@+id/download_icon"
+            android:icon="@drawable/download"
+            android:title="Download group plan" />
+
     </group>
 
-    <item android:title="CHUJÓW STO">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="NOPELAND" />
-        </menu>
-    </item>
+    <!--<item android:title="fdfdfd">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="NOPELAND" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

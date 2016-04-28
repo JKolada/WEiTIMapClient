@@ -29,6 +29,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <TableLayout
+        android:id="@+id/download_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

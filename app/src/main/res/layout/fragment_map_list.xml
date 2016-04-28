@@ -5,16 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:textColor="#ffffff"-->
-        <!--android:gravity="center"-->
-        <!--android:textSize="24sp"-->
-        <!--android:text="Loading..."/>-->
-
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-        android:id="@+id/subsamplingscale_image"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:text="Loading..."/>
+
+    <!--<com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView-->
+        <!--android:id="@+id/subsamplingscale_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+
+    <com.example.kuba.weitimap.PinView
+        android:id="@+id/imagePinView"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </FrameLayout>
