@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 public class TimetableActivity extends AppCompatActivity {
 
     ArrayList<TextView> timetableData = new ArrayList<TextView>();
+    FragmentAdapter mFragmentAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,29 +46,32 @@ public class TimetableActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
         ScheduleFragment fragment;
-
 
         fragment = new ScheduleFragment("even");
         Bundle bundle = new Bundle();
         bundle.putString("parity", "even");
         fragment.setArguments(bundle);
-        adapter.addFragment(fragment, MyAndUtils.parity.EVEN_WEEK);
+        mFragmentAdapter.addFragment(fragment, MyAndUtils.parity.EVEN_WEEK);
 
         fragment = new ScheduleFragment("odd");
         bundle = new Bundle();
         bundle.putString("parity", "odd");
         fragment.setArguments(bundle);
-        adapter.addFragment(fragment, MyAndUtils.parity.ODD_WEEK);
+        mFragmentAdapter.addFragment(fragment, MyAndUtils.parity.ODD_WEEK);
 
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(mFragmentAdapter);
     }
 
     static class FragmentAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private MyAndUtils.parity mParity;
 
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+        }
 
         public FragmentAdapter(FragmentManager fm) {
             super(fm);
@@ -76,6 +81,7 @@ public class TimetableActivity extends AppCompatActivity {
             mFragments.add(fragment);
             mParity = p;
         }
+
 
         @Override
         public Fragment getItem(int position) {
@@ -97,6 +103,12 @@ public class TimetableActivity extends AppCompatActivity {
             }
             return null;
         }
+
+//
+//        public void myClickMethod(View v) {
+//
+//
+//        }
     }
 }
 
