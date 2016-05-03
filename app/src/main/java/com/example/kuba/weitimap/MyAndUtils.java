@@ -1,16 +1,17 @@
 package com.example.kuba.weitimap;
 
 public class MyAndUtils {
+
     public final static String DOWNLOAD_NAME = "DOWNLOAD_PAGE";
-
-    public enum parity {
-        EVEN_WEEK, ODD_WEEK;
-    }
-
+    public final static String EMAIL_ADDRESS = "jakubkoladadev@gmail.com";
+    public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
     public final static String SERVER_DEFAULT_IP = "192.168.0.42";
     public final static String SERVER_DEFAULT_PORT = "13131";
 
 
+    public enum parity {
+        EVEN_WEEK, ODD_WEEK;
+    }
 //        public getScheduleResId(parity p, int row, int column
 //        {
 //

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 /**
  * Created by Kuba on 2016-04-27.
  */
@@ -32,7 +32,7 @@ public class DownloadActivity extends Activity {
         final EditText portEditText = (EditText) layout.findViewById(R.id.port_number);
         final EditText groupEditText = (EditText) layout.findViewById(R.id.group_name);
 
-        ipEditText.setText(MyAndUtils.SERVER_DEFAULT_IP);
+        ipEditText.setText(MyAndUtils.ASUS_VANTAGE_DEFAULT_IP); //SERVER_DEFAULT_IP
         portEditText.setText(MyAndUtils.SERVER_DEFAULT_PORT);
         groupEditText.setText("1E1");
 
@@ -53,6 +53,7 @@ public class DownloadActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
                 ip = ipEditText.getText().toString();
                 port = portEditText.getText().toString();
                 group = groupEditText.getText().toString();
@@ -88,28 +89,31 @@ public class DownloadActivity extends Activity {
                 } else {
                     downloadButton.setText("Download group plan, properly clicked");
 
+//                    System.setProperty("javax.net.ssl.trustStore", "clienttrust");
+
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
+//                                SSLSocketFactory sslFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+//                                SSLSocket socket = (SSLSocket) sslFactory.createSocket(ip, Integer.parseInt(port));
                                 Socket socket = new Socket(ip, Integer.parseInt(port));
                                 showToast("Connection succeeded");
+//                                socket.startHandshake();
+
+                                ClientGroupTask connection = new ClientGroupTask(socket, group);
+                                Thread clientThread = new Thread(connection);
+                                clientThread.start();
+
                             } catch (IOException e) {
                                 showToast("Connection failed");
+                                Log.d(TAG, "Socket or client thread failed");
                                 e.printStackTrace();
                             }
                         }
                     }).start();
 
 
-//            PrintWriter out =
-//                    new PrintWriter(socket.getOutputStream(), true);
-//            BufferedReader in =
-//                    new BufferedReader(
-//                            new InputStreamReader(socket.getInputStream()));
-//            BufferedReader stdIn =
-//                    new BufferedReader(
-//                            new InputStreamReader(System.in));
 
                 }
 
