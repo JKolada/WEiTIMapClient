@@ -6,11 +6,19 @@ public class MyAndUtils {
     public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
     public final static String SERVER_DEFAULT_IP = "192.168.0.42";
     public final static String SERVER_DEFAULT_PORT = "13131";
-    public final static String GET_GROUP_REQUEST =  "GET_GROUP:_";
 
-    final static String EMAIL_ADDRESS = "<HANDSHAKE/jakubkoladadev@gmail.com>";
-    final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-    final static String GET_GROUP = "<GET_GROUP/";
+    // PUBLIC NOT REQUIRED
+    public  final static String EMAIL_ADDRESS = "jakubkoladadev@gmail.com";
+    public final static String GROUP_EXISTS = "GROUP_EXISTS";
+    public final static String GROUP_DOESNT_EXIST = "GROUP_DOESNT_EXIST";
+
+    public final static String HANDSHAKE_MSG_TYPE = "HANDSHAKE";
+    public final static String GET_GROUP_MSG_TYPE = "GET_GROUP";
+    public final static String SEND_GROUP_MSG_TYPE = "SEND_GROUP";
+
+    public final static String MSG_TYPES_REGEXP = HANDSHAKE_MSG_TYPE + '|' + GET_GROUP_MSG_TYPE + '|' + SEND_GROUP_MSG_TYPE;
+
+    private final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
@@ -21,8 +29,6 @@ public class MyAndUtils {
         }
         return new String(hexChars);
     }
-
-
 
     public enum parity {
         EVEN_WEEK, ODD_WEEK;

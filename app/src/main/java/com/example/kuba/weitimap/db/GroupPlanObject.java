@@ -1,4 +1,5 @@
 package com.example.kuba.weitimap.db;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ public class GroupPlanObject implements Serializable{
     private final String nazwa_grupy;
     private final List<LectureObj> zajecia = new ArrayList<LectureObj>();
 
-    GroupPlanObject(String nazwa_gr) {
+    public GroupPlanObject(String nazwa_gr) {
         nazwa_grupy = nazwa_gr;
     }
 
@@ -23,7 +24,7 @@ public class GroupPlanObject implements Serializable{
         return nazwa_grupy;
     }
 
-    void add(LectureObj myLecture) {
+    public void add(LectureObj myLecture) {
         zajecia.add(myLecture);
     }
 
@@ -78,7 +79,7 @@ public class GroupPlanObject implements Serializable{
                     break;
             }
             data[row_no][col_no] = poj_zaj_info[4] + " " + poj_zaj_info[5] + " " + poj_zaj_info[0];
-//			System.out.println(row_no + " " + col_no + " " + data[row_no][col_no]); //TO DELETE		
+//			System.out.println(row_no + " " + col_no + " " + data[row_no][col_no]); //TO DELETE
         }
 
     }

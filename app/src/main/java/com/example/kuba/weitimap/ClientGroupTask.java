@@ -2,22 +2,25 @@ package com.example.kuba.weitimap;
 
 import android.util.Log;
 
+import com.example.kuba.weitimap.db.GroupPlanObject;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Kuba on 2016-05-02.
  */
 public class ClientGroupTask implements Runnable {
 
-    final static String TAG = "ClientTaskTAG";
+    private final static String TAG = "ClientTaskTAG";
     private Socket mySocket;
     private String groupName;
 
@@ -55,77 +58,66 @@ public class ClientGroupTask implements Runnable {
     @Override
     public void run() {
 
+        try {
+            outData = new DataOutputStream(mySocket.getOutputStream());
+            inData = new DataInputStream(mySocket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        sendMessage(new MyMessage(MyMessage.MessageType.HANDSHAKE));
+
+        MyMessage handshakeMsg;
+        while ((handshakeMsg = receiveMessageObj()) == null) {}
+
+        if (handshakeMsg.getType() == MyMessage.MessageType.HANDSHAKE) {
+            sendMessage(new MyMessage(MyMessage.MessageType.GET_GROUP, groupName));
+
+            MyMessage doesGroupExists;
+            while ((doesGroupExists = receiveMessageObj()) == null) {}
+
+            switch (doesGroupExists.getParam()) {
+                case MyAndUtils.GROUP_DOESNT_EXIST:
+                    Log.d(TAG, "Group doesnt exist.");
+                    shutdown();
+                    break;
+                case MyAndUtils.GROUP_EXISTS:
+                    break;
+                default:
+                    Log.d(TAG, "Unknown GET_GROUP message.");
+                    shutdown();
+            }
+
             try {
-                out = new PrintWriter(mySocket.getOutputStream(), true);
-                in = new BufferedReader( new InputStreamReader(mySocket.getInputStream()));
-
-                outData = new DataOutputStream(mySocket.getOutputStream());
-                inData = new DataInputStream(mySocket.getInputStream());
-
                 objIn = new ObjectInputStream(mySocket.getInputStream());
+                Log.d(TAG, "made an object stream");
+                GroupPlanObject gotGroup;
+                while ((gotGroup = (GroupPlanObject) objIn.readObject()) == null) {}
 
-//                if (handshake(out, in)) {
-//                    getGroupPlan(out, in, objIn);
+//                while ((gotGroup = (GroupPlanObject) objIn.readObject()) != null) {
+//                    Log.d(TAG, "Got GroupPlanObject for " + gotGroup.getGroupName() + " group.");
+//                    break;
 //                }
-//
-//                out.print("CLOSE_SOCKET");
-                while (true) {
-                    Log.d(TAG, receivePrefixedMessage());
-                }
-
+                Log.d(TAG, "Got GroupPlanObject for " + gotGroup.getGroupName() + " group.");
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    objIn.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }
 
         Log.d(TAG, "Communication has ended");
     }
 
-    private void getGroupPlan(PrintWriter out, BufferedReader in, ObjectInputStream objIn) {
-        String clientInput;
-        String groupRequest = MyAndUtils.GET_GROUP_REQUEST + groupName;
-        out.println(groupRequest);
-        Log.d(TAG, groupRequest + " - request sent");
-        while (true) {
-            try {
-                clientInput = in.readLine();
-                if (clientInput != null) {
-                    Log.d(TAG,"received message: " + clientInput);
-                    break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    private void sendMessage(MyMessage msg) {
+        sendMessageBytes(msg.toString());
     }
-
-
-//    private boolean handshake(PrintWriter out, BufferedReader in) {
-//        String clientInput;
-//        try {
-//            out.println(MyAndUtils.EMAIL_ADDRESS);
-////            while (true /*(clientInput = in.readLine()) != null*/) {
-//                clientInput = in.readLine();
-//                Log.d(TAG,"received message: " + clientInput);
-//                if (clientInput != null && clientInput.equals(MyAndUtils.EMAIL_ADDRESS)) {
-//                    Log.d(TAG, "Handshake succeeded");
-//                    return true;
-////                    break;
-//                } else {
-//                    Log.d(TAG, "Got wrong password");
-//                    return false;
-//                }
-////                wait(500);
-////            }
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-////        catch (InterruptedException e) {
-////            e.printStackTrace();
-////        }
-//
-//        return false;
-//    }
 
     private void sendMessageBytes(String message){
         byte[] msgBytes = message.getBytes();
@@ -153,6 +145,24 @@ public class ClientGroupTask implements Runnable {
         }
         return;
     }
+
+    private MyMessage receiveMessageObj() {
+        String msgString = receivePrefixedMessage();
+        if (msgString == null) return null;
+        String regexp = "<(" + MyAndUtils.MSG_TYPES_REGEXP + ")/([\\S]+)>";
+        Pattern pattern = Pattern.compile(regexp);
+        Matcher m = pattern.matcher(msgString);
+        boolean b = m.matches();
+        if (!b) {
+            Log.d(TAG, "Wrong message received");
+            shutdown();
+        }
+        String msg_type = m.group(1);
+        String msg_param = m.group(2);
+
+        return new MyMessage(msg_type, msg_param);
+    }
+
 
     private String receivePrefixedMessage() {
         byte[] prefixBuffer = new byte[4];
@@ -212,5 +222,15 @@ public class ClientGroupTask implements Runnable {
         return ret;
     }
 
+    private void shutdown() {
+        try {
+            outData.close();
+            inData.close();
+            mySocket.close();
+            System.out.println("Connection ended");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
