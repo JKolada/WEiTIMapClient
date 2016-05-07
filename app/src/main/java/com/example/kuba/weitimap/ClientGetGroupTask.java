@@ -3,6 +3,7 @@ package com.example.kuba.weitimap;
 import android.util.Log;
 
 import com.example.kuba.weitimap.db.GroupPlanObject;
+import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -18,10 +19,11 @@ import java.util.regex.Pattern;
 /**
  * Created by Kuba on 2016-05-02.
  */
-public class ClientGroupTask implements Runnable {
+public class ClientGetGroupTask implements Runnable {
 
     private final static String TAG = "ClientTaskTAG";
     private Socket mySocket;
+    private MyDatabase mDB;
     private String groupName;
 
     private PrintWriter out;
@@ -32,8 +34,9 @@ public class ClientGroupTask implements Runnable {
     private DataOutputStream outData;
     private DataInputStream inData;
 
-    ClientGroupTask(Socket socket, String groupname) {
+    ClientGetGroupTask(Socket socket, MyDatabase db, String groupname) {
         mySocket = socket;
+        mDB = db;
         groupName = groupname;
 
 //        SSLSession session = socket.getSession();
@@ -93,12 +96,8 @@ public class ClientGroupTask implements Runnable {
                 Log.d(TAG, "made an object stream");
                 GroupPlanObject gotGroup;
                 while ((gotGroup = (GroupPlanObject) objIn.readObject()) == null) {}
-
-//                while ((gotGroup = (GroupPlanObject) objIn.readObject()) != null) {
-//                    Log.d(TAG, "Got GroupPlanObject for " + gotGroup.getGroupName() + " group.");
-//                    break;
-//                }
                 Log.d(TAG, "Got GroupPlanObject for " + gotGroup.getGroupName() + " group.");
+                mDB.insertGroupPlan(gotGroup);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {

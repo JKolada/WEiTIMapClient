@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.example.kuba.weitimap.db.MyDatabase;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.regex.Matcher;
@@ -87,7 +89,7 @@ public class DownloadActivity extends Activity {
                     Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    downloadButton.setText("Download group plan, properly clicked");
+                    downloadButton.setText("Download group plan");
 
 //                    System.setProperty("javax.net.ssl.trustStore", "clienttrust");
 
@@ -99,9 +101,10 @@ public class DownloadActivity extends Activity {
 //                                SSLSocket socket = (SSLSocket) sslFactory.createSocket(ip, Integer.parseInt(port));
                                 Socket socket = new Socket(ip, Integer.parseInt(port));
                                 showToast("Connection succeeded");
-//                                socket.startHandshake();
 
-                                ClientGroupTask connection = new ClientGroupTask(socket, group);
+                                MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
+
+                                ClientGetGroupTask connection = new ClientGetGroupTask(socket, mDbHelper, group);
                                 Thread clientThread = new Thread(connection);
                                 clientThread.start();
 

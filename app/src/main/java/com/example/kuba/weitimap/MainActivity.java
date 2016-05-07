@@ -64,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.setupWithViewPager(viewPager);
         }
 
-        MyDatabase mDbHelper = new MyDatabase(this);
-//        mDbHelper.
+        MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

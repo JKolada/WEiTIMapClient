@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.kuba.weitimap.db.MyDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +45,15 @@ public class TimetableActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
+
+        MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
+
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), mDbHelper);
         ScheduleFragment fragment;
 
         fragment = new ScheduleFragment("even");
@@ -67,14 +74,16 @@ public class TimetableActivity extends AppCompatActivity {
     static class FragmentAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private MyAndUtils.parity mParity;
+        private MyDatabase mDB;
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             return super.instantiateItem(container, position);
         }
 
-        public FragmentAdapter(FragmentManager fm) {
+        public FragmentAdapter(FragmentManager fm, MyDatabase DB) {
             super(fm);
+            mDB = DB;
         }
 
         public void addFragment(Fragment fragment, MyAndUtils.parity p) {
@@ -95,20 +104,18 @@ public class TimetableActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
+            String group = mDB.getDownloadedGroupName();
+            if (group == null) group = "";
+            else group += " group: ";
             switch (position) {
                 case 0:
-                    return "even week";
+                    return group + "even week";
                 case 1:
-                    return "odd week";
+                    return group + "odd week";
             }
             return null;
         }
 
-//
-//        public void myClickMethod(View v) {
-//
-//
-//        }
     }
 }
 
