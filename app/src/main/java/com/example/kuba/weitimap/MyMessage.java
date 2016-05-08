@@ -2,7 +2,7 @@ package com.example.kuba.weitimap;
 
 import android.util.Log;
 
-class MyMessage
+public class MyMessage
 {
     private static final String TAG = "MessageTAG";
     public enum MessageType {HANDSHAKE, GET_GROUP, SEND_GROUP};

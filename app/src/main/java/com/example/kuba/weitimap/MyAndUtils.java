@@ -2,6 +2,8 @@ package com.example.kuba.weitimap;
 
 public class MyAndUtils {
 
+//    public enum clientResult {GROUP_INSERTED, SOCKET_ERROR, SOCKET_THREAD_ERROR, GROUP_DOESNT_EXIST}
+
     public final static String DOWNLOAD_NAME = "DOWNLOAD_PAGE";
     public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
     public final static String SERVER_DEFAULT_IP = "192.168.0.42";

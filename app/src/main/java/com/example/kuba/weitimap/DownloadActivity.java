@@ -1,6 +1,8 @@
 package com.example.kuba.weitimap;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,9 +14,9 @@ import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.example.kuba.weitimap.db.MyDatabase;
+import com.example.kuba.weitimap.server.ClientGetGroupTask;
+import com.example.kuba.weitimap.server.SocketHandler;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
@@ -22,14 +24,30 @@ import java.util.regex.Pattern;
  */
 public class DownloadActivity extends Activity {
     final static String TAG = "DownloadActivityTAG";
+    Button downloadButton;
+
+    private DownloadActivity thisActivity;
+
+    public void showToast(String msg, int length) {
+        final String toastMessage = msg;
+        final int toastLength = length;
+        runOnUiThread(new Runnable() {
+            public void run()
+            {
+                Toast.makeText(DownloadActivity.this, toastMessage, toastLength).show();
+            }
+        });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.download_layout);
 
+        thisActivity = this;
+
         TableLayout layout = (TableLayout) findViewById(R.id.download_layout);
-        final Button downloadButton = (Button) layout.findViewById(R.id.download_button);
+        downloadButton = (Button) layout.findViewById(R.id.download_button);
         final EditText ipEditText = (EditText) layout.findViewById(R.id.address_ip);
         final EditText portEditText = (EditText) layout.findViewById(R.id.port_number);
         final EditText groupEditText = (EditText) layout.findViewById(R.id.group_name);
@@ -37,8 +55,6 @@ public class DownloadActivity extends Activity {
         ipEditText.setText(MyAndUtils.ASUS_VANTAGE_DEFAULT_IP); //SERVER_DEFAULT_IP
         portEditText.setText(MyAndUtils.SERVER_DEFAULT_PORT);
         groupEditText.setText("1E1");
-
-//            downloadButton.setOnClickListener(new downloadBtnListener(ipEditText, portEditText, groupEditText));
 
         downloadButton.setOnClickListener(new View.OnClickListener() {
             private String ip;
@@ -85,44 +101,52 @@ public class DownloadActivity extends Activity {
                     }
                 }
 
-                if (message != "") {
+                if (!message.equals("")) {
                     Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                     toast.show();
                 } else {
-                    downloadButton.setText("Download group plan");
+                    thisActivity.setDownloadButtonEnable(false);
 
-//                    System.setProperty("javax.net.ssl.trustStore", "clienttrust");
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-//                                SSLSocketFactory sslFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-//                                SSLSocket socket = (SSLSocket) sslFactory.createSocket(ip, Integer.parseInt(port));
-                                Socket socket = new Socket(ip, Integer.parseInt(port));
-                                showToast("Connection succeeded");
-
-                                MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
-
-                                ClientGetGroupTask connection = new ClientGetGroupTask(socket, mDbHelper, group);
-                                Thread clientThread = new Thread(connection);
-                                clientThread.start();
-
-                            } catch (IOException e) {
-                                showToast("Connection failed");
-                                Log.d(TAG, "Socket or client thread failed");
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-
-
+//                  System.setProperty("javax.net.ssl.trustStore", "clienttrust");
+                    MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
+                    final ClientGetGroupTask connection = new ClientGetGroupTask(null, mDbHelper, group, thisActivity);
+                    final SocketHandler socketHandler = new SocketHandler(ip, port, connection, thisActivity);
+                    Thread socketThread = new Thread(socketHandler);
+                    socketThread.start();
 
                 }
+            }
 
+        });
+    }
+
+    public void setDownloadButtonEnable(boolean only_truth) {
+        Log.d(TAG, "LOOOOOL");
+        final boolean a = only_truth;
+        thisActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (downloadButton!= null) {
+                    if (a) {
+                        downloadButton.setText("Download group plan");
+                        downloadButton.setTextColor(Color.BLACK);
+                        downloadButton.setEnabled(a);
+                        downloadButton.setClickable(a);
+                    } else {
+                        downloadButton.setText("Downloading group plan");
+                        downloadButton.setTextColor(Color.GRAY);
+                        downloadButton.setEnabled(a);
+                        downloadButton.setClickable(a);
+                    }
+                }
             }
         });
 
+    }
+
+    public void startTimetableActivity() {
+        Intent intent = new Intent(DownloadActivity.this, TimetableActivity.class);
+        startActivity(intent);
 
     }
 }

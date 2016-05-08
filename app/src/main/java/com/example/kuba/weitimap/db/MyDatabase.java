@@ -132,7 +132,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         Cursor c = mDB.rawQuery(query, null);
 
         groupObject = new GroupPlanObject(group_name);
-        Log.d(TAG, "getGroupPlanObject: " + group_name);
+//        Log.d(TAG, "getGroupPlanObject: " + group_name);
         if (c != null && c.moveToFirst()) {
             do  {
                 List<String> pojedyncze_zajecia = new ArrayList<String>();
@@ -161,7 +161,6 @@ public class MyDatabase extends SQLiteOpenHelper {
     public void insertGroupPlan(GroupPlanObject groupToInsert) {
         mDB = getWritableDatabase();
         group = groupToInsert.getGroupName();
-        Log.d(TAG, group);
         removeGroup(group);
         insertGroup(group);
         List<LectureObj> lectureArray = groupToInsert.getLectureArray();

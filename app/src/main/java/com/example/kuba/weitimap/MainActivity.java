@@ -1,6 +1,7 @@
 package com.example.kuba.weitimap;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,7 +31,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CELL_CLICK = 1;
     private static final String TAG = "MainActivityTAG";
+
 
     DrawerLayout mDrawerLayout;
     MyDatabase mDB;
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         } else if (menuItem.getItemId() == R.id.plan_icon) {
                             Intent intent = new Intent(MainActivity.this, TimetableActivity.class);
-                            startActivity(intent);
+                            startActivityForResult(intent, REQUEST_CELL_CLICK);
                         }
 //                      } else if (menuItem.getItemId() == R.id.nav_subsamplingScale) {
 //                            Intent intent = new Intent(MainActivity.this, SubsamplingScaleActivity.class);
@@ -179,6 +182,19 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (REQUEST_CELL_CLICK == requestCode) {
+            if (Activity.RESULT_OK == resultCode) {
+                final int carId = data.getIntExtra(TimetableActivity.CLICKED_CELL_VALUE, -1);
+            }
+//            else {
+//                // handle a case where no selection was made
+//            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     static class FragmentAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();

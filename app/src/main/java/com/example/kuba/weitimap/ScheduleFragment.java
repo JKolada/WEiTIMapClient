@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,8 @@ public class ScheduleFragment extends Fragment {
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TextView) v).setText("clicked");
+//                ((TextView) v).setText("clicked");
+                mainActivity.returnWithCellClicked((String) ((TextView) v).getText());
             }
         };
         plugCellsListener(mainListener);
@@ -87,8 +89,10 @@ public class ScheduleFragment extends Fragment {
             for (int col = 1; col < 6; col++) {
                 String Rid = Rid_base + row + "x" + col;
                 int resID = getResources().getIdentifier(Rid, "id", mainActivity.getPackageName());
-                TextView scheduleCell = (TextView) timetable.findViewById(resID);
-                scheduleCell.setOnClickListener(listener);
+                TextView scheduleCell;
+                if (! ((scheduleCell = (TextView) timetable.findViewById(resID)).getText().equals("")) ) {
+                    scheduleCell.setOnClickListener(listener);
+                }
             }
         }
     }
@@ -105,32 +109,36 @@ public class ScheduleFragment extends Fragment {
     private void cleanCells() {
         char parChar = getParityChar();
         String RidString;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+
             RidString = parChar + "_timetable_header";
             int resID = getResources().getIdentifier(RidString , "id", mainActivity.getPackageName());
-            timetable.findViewById(resID).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            ((TextView) timetable.findViewById(resID)).setGravity(Gravity.CENTER);
 
             for (String s: MyAndUtils.WEEK_DAYS_IDS) {
                 RidString = parChar + "_" + s;
                 resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
-                timetable.findViewById(resID).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                ((TextView) timetable.findViewById(resID)).setGravity(Gravity.CENTER);
             }
 
             for (String s: MyAndUtils.HOURS_IDS) {
                 RidString = parChar + s;
                 resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
-                timetable.findViewById(resID).setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                TextView textView = (TextView) timetable.findViewById(resID);
+                textView.setGravity(Gravity.CENTER);
+                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 25, getResources().getDisplayMetrics());
+                textView.setHeight(height);
             }
-        }
 
         String Rid_base = "plan_" + parChar + "_";
         for (int row = 1; row < 13; row++) {
             for (int col = 1; col < 6; col++) {
                 String Rid = Rid_base + row + "x" + col;
-                int resID = getResources().getIdentifier(Rid, "id", mainActivity.getPackageName());
+                resID = getResources().getIdentifier(Rid, "id", mainActivity.getPackageName());
                 TextView textView = (TextView) timetable.findViewById(resID);
                 textView.setText("");
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
+                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 20, getResources().getDisplayMetrics());
+                textView.setHeight(height);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -158,7 +166,7 @@ public class ScheduleFragment extends Fragment {
 
         for (LectureObj a: lectureObjList) {
             String[] data = a.getLectureData();
-            Log.d(TAG, "fillCells: " + data[1] + " " + data[2] + " " + data[3] + " " + data[4] + " " + data[5]);
+//            Log.d(TAG, "fillCells: " + data[1] + " " + data[2] + " " + data[3] + " " + data[4] + " " + data[5]);
 
             parChar = Character.toUpperCase(getParityChar());
             String parString = "" + parChar;
