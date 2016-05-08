@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CELL_CLICK = 1;
     private static final String TAG = "MainActivityTAG";
 
-
-    DrawerLayout mDrawerLayout;
-    MyDatabase mDB;
+    private DrawerLayout mDrawerLayout;
+    private MyDatabase mDB;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
             navigationView.setItemIconTintList(null);
@@ -190,7 +192,10 @@ public class MainActivity extends AppCompatActivity {
         if (REQUEST_CELL_CLICK == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
                 final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
-                Log.d(TAG, clicked_cell_value);
+                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
+                if (!clicked_cell_value.equals("") && clicked_cell_value != null) {
+                    setNavigationPins(clicked_cell_value);
+                }
 
             }
 //            else {
@@ -198,6 +203,17 @@ public class MainActivity extends AppCompatActivity {
 //            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void setNavigationPins(String text) {
+
+        Pattern p = Pattern.compile("([A-Z]+)[ ]([WLCR])[ ]([0-9A-Z-]+)");
+        Matcher m = p.matcher(text);
+        boolean b = m.matches();
+        if (navigationView != null) {
+//            View blue_pin = navigationView.findViewById(R.id.arrow_blue);
+            navigationView.getMenu().getItem(1).setTitle(text);
         }
     }
 

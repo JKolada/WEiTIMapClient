@@ -3,13 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/arrow_up"
-            android:icon="@drawable/location_red"
-            android:title="Tu bedzie info na temat czerwonego znacznika" />
+            android:id="@+id/arrow_red"
+            android:icon="@drawable/location_red" />
         <item
-            android:id="@+id/arrow_down"
-            android:icon="@drawable/location_blue"
-            android:title="a tu na temat nebeskego" />
+            android:id="@+id/arrow_blue"
+            android:icon="@drawable/location_blue" />
         <item
             android:id="@+id/plan_icon"
             android:icon="@drawable/plan_icon"

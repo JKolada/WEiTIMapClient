@@ -74,7 +74,6 @@ public class ScheduleFragment extends Fragment {
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ((TextView) v).setText("clicked");
                 mainActivity.returnWithCellClicked((String) ((TextView) v).getText());
             }
         };
