@@ -2,14 +2,13 @@ package com.example.kuba.weitimap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -38,14 +37,16 @@ public class TimetableActivity extends AppCompatActivity {
             setupViewPager(viewPager);
             tabLayout.setupWithViewPager(viewPager);
         }
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_timetable);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void returnWithCellClicked(String text) {

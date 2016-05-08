@@ -4,7 +4,6 @@ package com.example.kuba.weitimap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
+            navigationView.setItemIconTintList(null);
         }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -69,10 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
+//                MainFragment fragment = (MainFragment) getFragmentManager().findFragmentById(R.layout.fragment_map_list);
+//                fragment.<specific_function_name>();
+//
 //                FragmentManager fm = getSupportFragmentManager();
 //
 //                MainFragment fragment = (MainFragment)fm.findFragmentById(R.id.);
@@ -186,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (REQUEST_CELL_CLICK == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
-                final int carId = data.getIntExtra(TimetableActivity.CLICKED_CELL_VALUE, -1);
+                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
+                Log.d(TAG, clicked_cell_value);
+
             }
 //            else {
 //                // handle a case where no selection was made

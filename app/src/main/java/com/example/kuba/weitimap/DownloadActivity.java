@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -121,7 +120,6 @@ public class DownloadActivity extends Activity {
     }
 
     public void setDownloadButtonEnable(boolean only_truth) {
-        Log.d(TAG, "LOOOOOL");
         final boolean a = only_truth;
         thisActivity.runOnUiThread(new Runnable() {
             @Override

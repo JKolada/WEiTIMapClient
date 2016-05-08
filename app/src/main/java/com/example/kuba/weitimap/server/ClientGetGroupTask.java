@@ -95,13 +95,15 @@ public class ClientGetGroupTask implements Runnable {
             switch (doesGroupExists.getParam()) {
                 case MyAndUtils.GROUP_DOESNT_EXIST:
                     Log.d(TAG, "Group doesn't exist.");
-                    shutdown("Group doesn't exist", Toast.LENGTH_LONG);
-                    break;
+                    shutdown("Group doesn't exist", Toast.LENGTH_SHORT);
+                    return;
+//                    break;
                 case MyAndUtils.GROUP_EXISTS:
                     break;
                 default:
                     Log.d(TAG, "Unknown GET_GROUP message.");
                     shutdown(CRITICAL_ERROR, Toast.LENGTH_LONG);
+                    return;
             }
 
             try {
@@ -193,14 +195,15 @@ public class ClientGetGroupTask implements Runnable {
         // end of prefix reading
 
         final ByteBuffer b = ByteBuffer.wrap(new String(prefixBuffer).getBytes());
-//        b.order(ByteOrder.BIG_ENDIAN);
+//      b.order(ByteOrder.BIG_ENDIAN);
         int dataLength = b.getInt() - 4;
+
+        if (dataLength <= 0) return null;
 //        Log.d(TAG, "DataLength: " + dataLength);
 
         // actual message reading
         int dataBytesToRead = dataLength;
         int dataBytesRead = 0;
-        // if dataLenght < 0 || > INFINITY ... throw something throwable
 
         byte[] dataBuffer = new byte[dataLength];
         while (dataBytesToRead > 0) {
