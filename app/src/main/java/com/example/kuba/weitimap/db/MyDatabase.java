@@ -129,20 +129,19 @@ public class MyDatabase extends SQLiteOpenHelper {
         mDB = getReadableDatabase();
         String query = "SELECT * FROM vw_plan WHERE nazwa_grupy = '" + group_name +"'";
         GroupPlanObject groupObject = null;
-    //      List<String> pojedyncze_zajecia = new ArrayList<String>();
         Cursor c = mDB.rawQuery(query, null);
 
         groupObject = new GroupPlanObject(group_name);
+        Log.d(TAG, "getGroupPlanObject: " + group_name);
         if (c != null && c.moveToFirst()) {
             do  {
                 List<String> pojedyncze_zajecia = new ArrayList<String>();
                 for (int k = 1; k < MyDatabaseUtilities.PLAN_VIEW_COL_NAMES.length; k++) {
                     pojedyncze_zajecia.add(c.getString(k));
-                    Log.d(TAG, c.getString(k));
                 }
                 groupObject.add(new LectureObj((ArrayList<String>) pojedyncze_zajecia));
-                c.moveToNext();
-//                if (c.isClosed()) break;
+//                String[] lecture_data = new LectureObj((ArrayList<String>) pojedyncze_zajecia).getLectureData();
+//                Log.d(TAG, "getGroupObject: " + lecture_data[1] + " " + lecture_data[2] + " " + lecture_data[3] + " " + lecture_data[4] + " " + lecture_data[5]);
             } while (c.moveToNext());
 
         } else {
@@ -160,7 +159,6 @@ public class MyDatabase extends SQLiteOpenHelper {
     }
 
     public void insertGroupPlan(GroupPlanObject groupToInsert) {
-//        fillMDB();
         mDB = getWritableDatabase();
         group = groupToInsert.getGroupName();
         Log.d(TAG, group);
@@ -169,7 +167,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         List<LectureObj> lectureArray = groupToInsert.getLectureArray();
         for (LectureObj lecture : lectureArray) {
             String[] lecture_data = lecture.getLectureData();
-            //{nazwa_sali, nazwa_dnia, id_godziny, parzystość, skrót_nazwy_zajęć, rodz_zajęć}
+//            Log.d(TAG, "insertGroupPlan: " + lecture_data[1] + " " + lecture_data[2] + " " + lecture_data[3] + " " + lecture_data[4] + " " + lecture_data[5]);
             String query =
                     "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
                             "SELECT a.grupa_id, b.dzien_tyg_id, " + lecture_data[2] + ", d.id_zajec, '" + lecture_data[5] + "', e.sala_id, '" + lecture_data[3] + "' " +

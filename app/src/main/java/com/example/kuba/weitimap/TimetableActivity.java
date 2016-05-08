@@ -104,14 +104,11 @@ public class TimetableActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String group = mDB.getDownloadedGroupName();
-            if (group == null) group = "";
-            else group += " group: ";
             switch (position) {
                 case 0:
-                    return group + "even week";
+                    return "even week";
                 case 1:
-                    return group + "odd week";
+                    return "odd week";
             }
             return null;
         }

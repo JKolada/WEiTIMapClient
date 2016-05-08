@@ -21,15 +21,15 @@ public class LectureObj extends LectureParentObj implements Serializable {
         rodz_zajęć = poj_zajęcia.get(5);
     }
 
-    protected String[] getLectureData() {
+    public String[] getLectureData() {
         final String[] lectureData = {nazwa_sali, nazwa_dnia, id_godziny, parzystość, skrót_nazwy_zajęć, rodz_zajęć};
         return lectureData;
     }
 
     Boolean isEven() {
-        if (parzystość.charAt(0) == 'P') {
+        if (parzystość.equals("P")) {
             return true;
-        } else if (parzystość.charAt(0) == 'N') {
+        } else if (parzystość.equals("N")) {
             return false;
         } else {
             return null;
