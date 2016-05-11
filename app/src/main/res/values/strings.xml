@@ -25,4 +25,6 @@
     <string name="_18_19">18 - 19</string>
     <string name="_19_20">19 - 20</string>
     <string name="timetable">Timetable</string>
+    <string name="arrow_blue_title">Set from Timetable</string>
+    <string name="arrow_red">No classes today</string>
 </resources>

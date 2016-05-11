@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,15 +16,21 @@ import android.widget.TextView;
 import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by Kuba on 2016-04-05.
  */
 public class TimetableActivity extends AppCompatActivity {
-    public static final String CLICKED_CELL_VALUE = "com.example.kuba.weitimap.TimetableActivity.CLICKED_CELL_VALUE";
+
+    public static final String TAG = "TimetableActivity";
+    public static final String CLICKED_CELL_VALUE = "TimetableActivity.CLICKED_CELL_VALUE";
+    public static final String CELL_PARAMETERS = "TimetableActivity.CELL_PARAMETERS";
+
     ArrayList<TextView> timetableData = new ArrayList<TextView>();
     FragmentAdapter mFragmentAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,22 +44,67 @@ public class TimetableActivity extends AppCompatActivity {
             setupViewPager(viewPager);
             tabLayout.setupWithViewPager(viewPager);
         }
+
+        if (getIntent() == null) {
+            Log.d(TAG, "Activity executed without intention");
+        } else {
+            Log.d(TAG, "Activity executed with intention");
+        }
+
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
-            return true;
+            invokeMain(this);
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public void returnWithCellClicked(String text) {
+
+    public void invokeMain(TimetableActivity mainAct) {
+        Intent intent = new Intent();
+        intent.setAction(MyAndUtils.MAIN_BACK_ACTION);
+        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+        mainAct.startActivity(intent);
+    }
+
+    public void returnWithCellClicked(int EditTextId, String text) {
+
+        ArrayList<String> params = new ArrayList<String>(3);
+
+
+        char[] parity = {'p', 'n'};
+        for (char par : parity) {
+            for (int row = 1; row < 13; row++) {
+                for (int col = 1; col < 6; col++) {
+                    String Rid = "plan_" + par + "_" + row + "x" + col;
+                    int resID = getResources().getIdentifier(Rid, "id", this.getPackageName());
+                    if (EditTextId == resID) {
+                        params.add(Character.toString(par));
+                        params.add(Integer.toString(row));
+                        params.add(Integer.toString(col));
+                        Log.d(TAG, "EditText params: " + Character.toString(par) + " " + Integer.toString(row) + " " + Integer.toString(col));
+                    }
+                }
+            }
+        }
+
         Intent i = new Intent();
-        i.putExtra(CLICKED_CELL_VALUE, text);
+        i.setAction(MyAndUtils.MAIN_BACK_ACTION);
+        i.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+
+        Bundle b = new Bundle();
+        b.putString(CLICKED_CELL_VALUE, text);
+
+        if (params != null) {
+            b.putStringArrayList(CELL_PARAMETERS, params);
+        }
+
+        i.putExtras(b);
+
         setResult(RESULT_OK, i);
+        startActivity(i);
         finish();
     }
 
@@ -77,6 +129,34 @@ public class TimetableActivity extends AppCompatActivity {
 
         viewPager.setAdapter(mFragmentAdapter);
     }
+
+    private void setAlarm(){
+
+        Calendar c = Calendar.getInstance();
+        int seconds = c.get(Calendar.SECOND);
+
+
+
+        int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
+        int month = c.get(Calendar.MONTH);
+        int day_of_month = c.get(Calendar.DAY_OF_MONTH);
+        int day_of_week = c.get(Calendar.DAY_OF_WEEK);
+
+        Log.d(TAG, "hour: " + hour_of_day + " " + month + " " + day_of_month + " " + day_of_week);
+
+
+
+//        Intent intent = new Intent(this, OnetimeAlarmReceiver.class);
+//
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, 0);
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + alarm_time , pendingIntent);
+//        System.out.println("Time Total ----- "+(System.currentTimeMillis()+total_mili));
+
+
+    }
+
 
 
     static class FragmentAdapter extends FragmentPagerAdapter {

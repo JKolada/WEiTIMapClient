@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/arrow_red"
-            android:icon="@drawable/location_red" />
-        <item
-            android:id="@+id/arrow_blue"
-            android:icon="@drawable/location_blue" />
-        <item
-            android:id="@+id/plan_icon"
-            android:icon="@drawable/plan_icon"
-            android:title="Timetable" />
-        <item
-            android:id="@+id/download_icon"
-            android:icon="@drawable/download"
-            android:title="Download group plan" />
 
+
+    <group android:checkableBehavior="single">
+             <item
+                    android:id="@+id/arrow_red"
+                    android:icon="@drawable/location_red"
+                    android:title="@string/arrow_red"
+                    />
+                <item
+                    android:id="@+id/arrow_blue"
+                    android:icon="@drawable/location_blue"
+                    android:title="@string/arrow_blue_title"
+                    />
+            <item
+                android:id="@+id/plan_icon"
+                android:icon="@drawable/plan_icon"
+                android:title="Timetable" />
+            <item
+                android:id="@+id/download_icon"
+                android:icon="@drawable/download"
+                android:title="Download group plan" />
     </group>
 
-    <!--<item android:title="fdfdfd">-->
-        <!--<menu>-->
-            <!--<item-->
-                <!--android:id="@+id/nav_share"-->
-                <!--android:icon="@drawable/ic_menu_share"-->
-                <!--android:title="NOPELAND" />-->
-        <!--</menu>-->
-    <!--</item>-->
+
 
 </menu>

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +45,11 @@ public class DownloadActivity extends Activity {
         setContentView(R.layout.download_layout);
 
         thisActivity = this;
+
+//        Intent intent = getIntent();
+        if (getIntent() == null) {
+            Log.w(TAG, "Activity executed without intention");
+        }
 
         TableLayout layout = (TableLayout) findViewById(R.id.download_layout);
         downloadButton = (Button) layout.findViewById(R.id.download_button);
@@ -142,9 +148,10 @@ public class DownloadActivity extends Activity {
 
     }
 
+
     public void startTimetableActivity() {
-        Intent intent = new Intent(DownloadActivity.this, TimetableActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(MyAndUtils.TIMETABLE_ACTION);
+        this.startActivity(intent);
 
     }
 }

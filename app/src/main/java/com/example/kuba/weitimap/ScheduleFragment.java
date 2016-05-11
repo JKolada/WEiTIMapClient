@@ -74,7 +74,8 @@ public class ScheduleFragment extends Fragment {
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.returnWithCellClicked((String) ((TextView) v).getText());
+
+                mainActivity.returnWithCellClicked(v.getId(), (String) ((TextView) v).getText());
             }
         };
         plugCellsListener(mainListener);
@@ -89,7 +90,7 @@ public class ScheduleFragment extends Fragment {
                 String Rid = Rid_base + row + "x" + col;
                 int resID = getResources().getIdentifier(Rid, "id", mainActivity.getPackageName());
                 TextView scheduleCell;
-                if (! ((scheduleCell = (TextView) timetable.findViewById(resID)).getText().equals("")) ) {
+                if (((scheduleCell = (TextView) timetable.findViewById(resID)).getText() != "")) {
                     scheduleCell.setOnClickListener(listener);
                 }
             }

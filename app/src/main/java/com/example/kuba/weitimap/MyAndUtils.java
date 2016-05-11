@@ -4,7 +4,11 @@ public class MyAndUtils {
 
 //    public enum clientResult {GROUP_INSERTED, SOCKET_ERROR, SOCKET_THREAD_ERROR, GROUP_DOESNT_EXIST}
 
-    public final static String DOWNLOAD_NAME = "DOWNLOAD_PAGE";
+    public final static String DOWNLOAD_ACTION = "com.example.kuba.weitimap.DOWNLOAD";
+    public final static String MAIN_BACK_ACTION =  "com.example.kuba.weitimap.MAIN_BACK";
+    public final static String TIMETABLE_ACTION = "com.example.kuba.weitimap.TIMETABLE";
+    public final static String CATEGORY_DEFAULT = "android.intent.category.DEFAULT";
+
     public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
     public final static String SERVER_DEFAULT_IP = "192.168.0.42";
     public final static String SERVER_DEFAULT_PORT = "13131";
