@@ -154,7 +154,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         return groupObject;
     }
 
-    public String getDownloadedGroupName() {
+    public static String getDownloadedGroupName() {
         return group;
     }
 

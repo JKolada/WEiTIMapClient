@@ -2,6 +2,7 @@ package com.example.kuba.weitimap;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,7 +58,7 @@ public class DownloadActivity extends Activity {
         final EditText portEditText = (EditText) layout.findViewById(R.id.port_number);
         final EditText groupEditText = (EditText) layout.findViewById(R.id.group_name);
 
-        ipEditText.setText(MyAndUtils.ASUS_VANTAGE_DEFAULT_IP); //SERVER_DEFAULT_IP
+        ipEditText.setText(MyAndUtils.THINKPAD_DEFAULT_IP); //ASUS_VANTAGE_DEFAULT_IP THINKPAD_DEFAULT_IP
         portEditText.setText(MyAndUtils.SERVER_DEFAULT_PORT);
         groupEditText.setText("1E1");
 
@@ -150,8 +151,41 @@ public class DownloadActivity extends Activity {
 
 
     public void startTimetableActivity() {
-        Intent intent = new Intent(MyAndUtils.TIMETABLE_ACTION);
-        this.startActivity(intent);
+
+        SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(MyAndUtils.LAST_INSERTED_GROUP_NAME, MyDatabase.getDownloadedGroupName());
+        editor.commit();
+
+//        Intent intent = new Intent();
+//        startActivityForResult(intent, MainActivity.REQUEST_CELL_CLICK);
+//        this.startActivity(intent);
+
+        Intent i = new Intent(this, TimetableActivity.class);
+        startActivityForResult(i,  MainActivity.REQUEST_CELL_CLICK);
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (MainActivity.REQUEST_CELL_CLICK == requestCode) {
+            if (Activity.RESULT_OK == resultCode) {
+                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
+                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
+//                if (!click    ed_cell_value.equals("") && clicked_cell_value != null) {
+//                    setNavigationPins(clicked_cell_value);
+//                }
+                finish();
+
+            }
+//            else {
+//                // handle a case where no selection was made
+//            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
 }

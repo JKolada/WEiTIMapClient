@@ -9,8 +9,12 @@ public class MyAndUtils {
     public final static String TIMETABLE_ACTION = "com.example.kuba.weitimap.TIMETABLE";
     public final static String CATEGORY_DEFAULT = "android.intent.category.DEFAULT";
 
+    public final static String MY_PREFERENCES = "com.example.kuba.weitimap";
+    public final static String LAST_INSERTED_GROUP_NAME = "LAST_INSERTED_GROUP_NAME";
+    public final static String LAST_CLICKED_CELL_VALUE = "LAST_CLICKED_CELL_VALUE";
+
     public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
-    public final static String SERVER_DEFAULT_IP = "192.168.0.42";
+    public final static String THINKPAD_DEFAULT_IP = "192.168.1.104";
     public final static String SERVER_DEFAULT_PORT = "13131";
 
     public final static String EMAIL_ADDRESS = "jakubkoladadev@gmail.com";

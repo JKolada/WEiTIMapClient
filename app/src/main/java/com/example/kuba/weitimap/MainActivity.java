@@ -1,7 +1,9 @@
 package com.example.kuba.weitimap;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.kuba.weitimap.db.GroupPlanObject;
 import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CELL_CLICK = 1;
+    static final int REQUEST_CELL_CLICK = 1;
     private static final String TAG = "MainActivityTAG";
 
     private DrawerLayout mDrawerLayout;
@@ -74,42 +77,50 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Activity executed without intention.");
         }
 
-        final String clicked_cell_value;
-        if (intent != null) {
-            if (intent.getAction().equals(MyAndUtils.MAIN_BACK_ACTION)) {
-
-                Bundle b = intent.getExtras();
-                clicked_cell_value = b.getString(TimetableActivity.CLICKED_CELL_VALUE);
-                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
-                if (clicked_cell_value != "" && clicked_cell_value != null) {
-                    setNavigationPins(clicked_cell_value);
-                }
-
-                ArrayList<String> stringArray = new ArrayList<String>(3);
-                stringArray = b.getStringArrayList(TimetableActivity.CELL_PARAMETERS);
-
-                String par = stringArray.get(0);
-                int row = Integer.parseInt(stringArray.get(1));
-                int col = Integer.parseInt(stringArray.get(2));
-
-//TODO
-//                switch (row) {
-//
-//                }
-//
-//                switch (col) {
-//
-//
-//                }
-//
-//                switch (par) {
-//
-//                }
-
-
-
-            }
+        SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+        String clickedCellValue = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_VALUE, "null");
+        if (clickedCellValue != "null") {
+            setNavigationPins(clickedCellValue);
         }
+
+
+//        final String clicked_cell_value;
+//        if (intent != null) {
+//            if (intent.getAction().equals(MyAndUtils.MAIN_BACK_ACTION)) {
+//
+//
+//                Bundle b = intent.getExtras();
+//                String clicked_cell_value = b.getString(TimetableActivity.CLICKED_CELL_VALUE);
+//                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
+//                if (clicked_cell_value != "" && clicked_cell_value != null) {
+//                    setNavigationPins(clicked_cell_value);
+//                }
+//
+//                ArrayList<String> stringArray = new ArrayList<String>(3);
+//                stringArray = b.getStringArrayList(TimetableActivity.CELL_PARAMETERS);
+//
+//                String par = stringArray.get(0);
+//                int row = Integer.parseInt(stringArray.get(1));
+//                int col = Integer.parseInt(stringArray.get(2));
+//
+////TODO
+////                switch (row) {
+////
+////                }
+////
+////                switch (col) {
+////
+////
+////                }
+////
+////                switch (par) {
+////
+////                }
+//
+//
+//
+//            }
+//        }
 
    }
 
@@ -141,24 +152,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (REQUEST_CELL_CLICK == requestCode) {
-//            if (Activity.RESULT_OK == resultCode) {
-//                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
-//                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
-//                if (!clicked_cell_value.equals("") && clicked_cell_value != null) {
-//                    setNavigationPins(clicked_cell_value);
-//                }
-//
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (REQUEST_CELL_CLICK == requestCode) {
+            if (RESULT_OK == resultCode) {
+                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
+                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
+                if (clicked_cell_value != null && clicked_cell_value != "") {
+                    setNavigationPins(clicked_cell_value);
+                }
+
+            }
+//            else {
+//                // handle a case where no selection was made
 //            }
-////            else {
-////                // handle a case where no selection was made
-////            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
@@ -170,13 +181,6 @@ public class MainActivity extends AppCompatActivity {
             fragment.setArguments(bundle);
             adapter.addFragment(fragment, Integer.toString(i-1));
         }
-//
-//        fragment = new MainFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putString("floor_name", MyAndUtils.DOWNLOAD_NAME);
-//        fragment.setArguments(bundle);
-//        adapter.addFragment(fragment, "D");
-
         viewPager.setAdapter(adapter);
     }
 
@@ -199,17 +203,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void invokeTimetable(MainActivity mainAct) {
-        Intent intent = new Intent();
-        intent.setAction(MyAndUtils.TIMETABLE_ACTION);
-        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
-        mainAct.startActivity(intent);
+//        Intent intent = new Intent();
+//        intent.setAction(MyAndUtils.TIMETABLE_ACTION);
+//        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+//        mainAct.startActivity(intent);
+
+        Intent i = new Intent(this, TimetableActivity.class);
+        startActivityForResult(i, REQUEST_CELL_CLICK);
     }
 
     public void invokeDownload(MainActivity mainAct) {
-        Intent intent = new Intent();
-        intent.setAction(MyAndUtils.DOWNLOAD_ACTION);
-        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
-        mainAct.startActivity(intent);
+//        Intent intent = new Intent();
+//        intent.setAction(MyAndUtils.DOWNLOAD_ACTION);
+//        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+//        mainAct.startActivity(intent);
+
+        Intent i = new Intent(this, DownloadActivity.class);
+        startActivityForResult(i, REQUEST_CELL_CLICK);
+
     }
 
     private void setNavigationPins(String text) {

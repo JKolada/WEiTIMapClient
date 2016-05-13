@@ -70,7 +70,8 @@ public class ClientGetGroupTask implements Runnable {
     public void run() {
 
         if (mySocket == null) {
-            shutdown(CRITICAL_ERROR, Toast.LENGTH_LONG);
+//            shutdown(CRITICAL_ERROR, Toast.LENGTH_LONG);
+            return;
         }
 
         try {
@@ -78,7 +79,8 @@ public class ClientGetGroupTask implements Runnable {
             inData = new DataInputStream(mySocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            shutdown(CRITICAL_ERROR, Toast.LENGTH_LONG);
+//            shutdown(CRITICAL_ERROR, Toast.LENGTH_LONG);
+            return;
         }
 
         sendMessage(new MyMessage(MyMessage.MessageType.HANDSHAKE));
@@ -119,9 +121,11 @@ public class ClientGetGroupTask implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
                 shutdown("Communication error", Toast.LENGTH_SHORT);
+                return;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 shutdown("Communication error", Toast.LENGTH_SHORT);
+                return;
             }
         }
         Log.d(TAG, "Communication has ended");
@@ -230,9 +234,12 @@ public class ClientGetGroupTask implements Runnable {
 
     private void shutdown() {
         try {
-            outData.close();
-            inData.close();
-            mySocket.close();
+            if (outData != null)
+                outData.close();
+            if (inData != null)
+                inData.close();
+            if (mySocket != null)
+                mySocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

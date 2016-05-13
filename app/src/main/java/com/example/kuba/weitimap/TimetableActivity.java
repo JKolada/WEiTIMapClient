@@ -1,6 +1,7 @@
 package com.example.kuba.weitimap;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.kuba.weitimap.db.GroupPlanObject;
 import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.List;
  */
 public class TimetableActivity extends AppCompatActivity {
 
-    public static final String TAG = "TimetableActivity";
+    public static final String TAG = "TimetableActivityTAG";
     public static final String CLICKED_CELL_VALUE = "TimetableActivity.CLICKED_CELL_VALUE";
     public static final String CELL_PARAMETERS = "TimetableActivity.CELL_PARAMETERS";
 
@@ -56,21 +58,25 @@ public class TimetableActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            invokeMain(this);
+//            invokeMain(this);
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+            finish();
         }
         return super.onKeyDown(keyCode, event);
     }
 
-
-    public void invokeMain(TimetableActivity mainAct) {
-        Intent intent = new Intent();
-        intent.setAction(MyAndUtils.MAIN_BACK_ACTION);
-        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
-        mainAct.startActivity(intent);
-    }
+//    public void invokeMain(TimetableActivity mainAct) {
+//        Intent intent = new Intent();
+//        intent.setAction(MyAndUtils.MAIN_BACK_ACTION);
+//        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+//        mainAct.startActivity(intent);
+//    }
 
     public void returnWithCellClicked(int EditTextId, String text) {
 
+
+        setAlarm();
         ArrayList<String> params = new ArrayList<String>(3);
 
 
@@ -90,21 +96,25 @@ public class TimetableActivity extends AppCompatActivity {
             }
         }
 
+        SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(MyAndUtils.LAST_CLICKED_CELL_VALUE, text);
+        editor.commit();
+
         Intent i = new Intent();
-        i.setAction(MyAndUtils.MAIN_BACK_ACTION);
-        i.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+//        i.setAction(MyAndUtils.MAIN_BACK_ACTION);
+//        i.addCategory(MyAndUtils.CATEGORY_DEFAULT);
 
         Bundle b = new Bundle();
         b.putString(CLICKED_CELL_VALUE, text);
-
-        if (params != null) {
-            b.putStringArrayList(CELL_PARAMETERS, params);
-        }
-
+// todo
+//        if (params != null) {
+//            b.putStringArrayList(CELL_PARAMETERS, params);
+//        }
         i.putExtras(b);
 
         setResult(RESULT_OK, i);
-        startActivity(i);
+//        startActivity(i);
         finish();
     }
 
@@ -135,16 +145,33 @@ public class TimetableActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         int seconds = c.get(Calendar.SECOND);
 
-
+//        cal.set(Calendar.DATE,date);
+//        cal.set(Calendar.MONTH,month-1);
+//        cal.set(Calendar.YEAR,year);
+//        cal.set(Calendar.HOUR_OF_DAY, hour);
+//        cal.set(Calendar.MINUTE, minute);
 
         int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
         int month = c.get(Calendar.MONTH);
         int day_of_month = c.get(Calendar.DAY_OF_MONTH);
         int day_of_week = c.get(Calendar.DAY_OF_WEEK);
 
+        char par = ' ';
+        if
+            (
+                (month == Calendar.MAY && ((day_of_month >= 16 && day_of_month <= 20) || (day_of_month >= 30)) )
+                || (month == Calendar.JUNE && (day_of_month >= 13 && day_of_month <= 14))
+            )
+            par = 'p';
+        else if
+            (
+                (month == Calendar.MAY && ((day_of_month >= 23 && day_of_month <= 27)))
+                 || (month == Calendar.JUNE && ((day_of_month >= 6 && day_of_month <= 10) || (day_of_month >= 15 && day_of_month <= 16)))
+            )
+            par = 'n';
+
         Log.d(TAG, "hour: " + hour_of_day + " " + month + " " + day_of_month + " " + day_of_week);
-
-
+        Log.d(TAG, "parity: " + par);
 
 //        Intent intent = new Intent(this, OnetimeAlarmReceiver.class);
 //

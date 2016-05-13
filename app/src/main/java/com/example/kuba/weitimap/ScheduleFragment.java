@@ -1,6 +1,7 @@
 package com.example.kuba.weitimap;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -69,7 +70,14 @@ public class ScheduleFragment extends Fragment {
         if (group_name != null) {
             GroupPlanObject toFillSchedule = mDbHelper.getGroupPlanObject(group_name);
             fillCells(toFillSchedule);
-        };
+        } else {
+            SharedPreferences prefs = mainActivity.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+            String groupName = prefs.getString(MyAndUtils.LAST_INSERTED_GROUP_NAME, "null");
+            if (groupName != "null") {
+                GroupPlanObject toFillSchedule = mDbHelper.getGroupPlanObject(groupName);
+                fillCells(toFillSchedule);
+            }
+        }
 
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
