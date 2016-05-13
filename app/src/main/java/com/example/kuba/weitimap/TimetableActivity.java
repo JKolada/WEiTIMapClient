@@ -1,18 +1,22 @@
 package com.example.kuba.weitimap;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.kuba.weitimap.db.MyDatabase;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -20,8 +24,13 @@ import java.util.List;
  */
 public class TimetableActivity extends AppCompatActivity {
 
+    public static final String TAG = "TimetableActivity";
+    public static final String CLICKED_CELL_VALUE = "TimetableActivity.CLICKED_CELL_VALUE";
+    public static final String CELL_PARAMETERS = "TimetableActivity.CELL_PARAMETERS";
+
     ArrayList<TextView> timetableData = new ArrayList<TextView>();
     FragmentAdapter mFragmentAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,17 +45,74 @@ public class TimetableActivity extends AppCompatActivity {
             tabLayout.setupWithViewPager(viewPager);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_timetable);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if (getIntent() == null) {
+            Log.d(TAG, "Activity executed without intention");
+        } else {
+            Log.d(TAG, "Activity executed with intention");
+        }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            invokeMain(this);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+    public void invokeMain(TimetableActivity mainAct) {
+        Intent intent = new Intent();
+        intent.setAction(MyAndUtils.MAIN_BACK_ACTION);
+        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+        mainAct.startActivity(intent);
+    }
+
+    public void returnWithCellClicked(int EditTextId, String text) {
+
+        ArrayList<String> params = new ArrayList<String>(3);
+
+
+        char[] parity = {'p', 'n'};
+        for (char par : parity) {
+            for (int row = 1; row < 13; row++) {
+                for (int col = 1; col < 6; col++) {
+                    String Rid = "plan_" + par + "_" + row + "x" + col;
+                    int resID = getResources().getIdentifier(Rid, "id", this.getPackageName());
+                    if (EditTextId == resID) {
+                        params.add(Character.toString(par));
+                        params.add(Integer.toString(row));
+                        params.add(Integer.toString(col));
+                        Log.d(TAG, "EditText params: " + Character.toString(par) + " " + Integer.toString(row) + " " + Integer.toString(col));
+                    }
+                }
             }
-        });
+        }
+
+        Intent i = new Intent();
+        i.setAction(MyAndUtils.MAIN_BACK_ACTION);
+        i.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+
+        Bundle b = new Bundle();
+        b.putString(CLICKED_CELL_VALUE, text);
+
+        if (params != null) {
+            b.putStringArrayList(CELL_PARAMETERS, params);
+        }
+
+        i.putExtras(b);
+
+        setResult(RESULT_OK, i);
+        startActivity(i);
+        finish();
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
+
+        MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
+
+        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), mDbHelper);
         ScheduleFragment fragment;
 
         fragment = new ScheduleFragment("even");
@@ -64,17 +130,48 @@ public class TimetableActivity extends AppCompatActivity {
         viewPager.setAdapter(mFragmentAdapter);
     }
 
+    private void setAlarm(){
+
+        Calendar c = Calendar.getInstance();
+        int seconds = c.get(Calendar.SECOND);
+
+
+
+        int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
+        int month = c.get(Calendar.MONTH);
+        int day_of_month = c.get(Calendar.DAY_OF_MONTH);
+        int day_of_week = c.get(Calendar.DAY_OF_WEEK);
+
+        Log.d(TAG, "hour: " + hour_of_day + " " + month + " " + day_of_month + " " + day_of_week);
+
+
+
+//        Intent intent = new Intent(this, OnetimeAlarmReceiver.class);
+//
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, 0);
+//
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + alarm_time , pendingIntent);
+//        System.out.println("Time Total ----- "+(System.currentTimeMillis()+total_mili));
+
+
+    }
+
+
+
     static class FragmentAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private MyAndUtils.parity mParity;
+        private MyDatabase mDB;
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             return super.instantiateItem(container, position);
         }
 
-        public FragmentAdapter(FragmentManager fm) {
+        public FragmentAdapter(FragmentManager fm, MyDatabase DB) {
             super(fm);
+            mDB = DB;
         }
 
         public void addFragment(Fragment fragment, MyAndUtils.parity p) {
@@ -104,108 +201,5 @@ public class TimetableActivity extends AppCompatActivity {
             return null;
         }
 
-//
-//        public void myClickMethod(View v) {
-//
-//
-//        }
     }
 }
-
-//
-//        thisView.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        thisView.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        LinearLayout linearLayout = (LinearLayout) vi.inflate(R.layout.activity_timetable, null);
-
-//        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_timetable, null);
-
-//        TableLayout tableLayout = (TableLayout) linearLayout.findViewById(R.id.timetable_layout);
-
-////        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timetable_layout);
-////        TableLayout tableLayout = new TableLayout(getApplicationContext());
-//        TableLayout tableLayout = (TableLayout) findViewById(R.id.timetable_layout);
-//
-//        TableLayout.LayoutParams textViewParams = new TableLayout.LayoutParams(
-//                TableLayout.LayoutParams.MATCH_PARENT,
-//                TableLayout.LayoutParams.MATCH_PARENT,
-//                1.0f);
-//
-//
-//        TableRow singleRow = new TableRow(this);
-//
-//        singleRow.setLayoutParams(textViewParams);
-//
-//        TextView singleTextView = new TextView(getApplicationContext());
-//        singleTextView.setLayoutParams(textViewParams);
-//        singleTextView.setText("8:15-9:00");
-//        singleTextView.setPadding(1, 1, 1, 1);
-//        singleRow.addView(singleTextView);
-//
-//        for (int i = 0; i < 5; i++) {
-//            singleTextView = new TextView(getApplicationContext());
-//            singleTextView.setLayoutParams(textViewParams);
-//            singleRow.addView(singleTextView);
-//        }
-//
-//        tableLayout.addView(singleRow);
-//
-//        TextView temp = new TextView(getApplicationContext());
-//        temp.setText("Hello");
-//        tableLayout.addView(temp);
-//
-//        setContentView(R.layout.activity_timetable);
-////        linearLayout.addView(tableLayout);
-
-//        linearLayout.inflate()
-//        vi.inflate(R.layout.activity_timetable, tableLayout);
-//      insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-//        tabLayout.addView(singleRow);
-//    }
-
-//    private void setTableLayout() {
-////        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-////        LinearLayout linearLayout = (LinearLayout) vi.inflate(R.layout.activity_timetable, null);
-////
-////        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_timetable, null);
-////
-//////        TableLayout tableLayout = (TableLayout) linearLayout.findViewById(R.id.timetable_layout);
-////
-////        TableLayout tableLayout = new TableLayout(this);
-////
-////        TableLayout.LayoutParams textViewParams = new TableLayout.LayoutParams(
-////                TableLayout.LayoutParams.MATCH_PARENT,
-////                TableLayout.LayoutParams.MATCH_PARENT,
-////                1.0f);
-////
-////        TableRow singleRow = new TableRow(this);
-////
-////        singleRow.setLayoutParams(textViewParams);
-////
-////        TextView singleTextView = new TextView(this);
-////        singleTextView.setLayoutParams(textViewParams);
-////        singleTextView.setText("8:15-9:00");
-////        singleTextView.setPadding(1, 1, 1, 1);
-////        singleRow.addView(singleTextView);
-////
-////        for (int i = 0; i < 5; i++) {
-////            singleTextView = new TextView(this);
-////            singleTextView.setLayoutParams(textViewParams);
-////            singleRow.addView(singleTextView);
-////        }
-////
-////        tableLayout.addView(singleRow);
-////
-////        TextView temp = new TextView(this);
-////        temp.setText("Hello");
-////        tableLayout.addView(temp);
-////
-////        linearLayout.addView(tableLayout);
-//
-////        linearLayout.inflate()
-////        vi.inflate(R.layout.activity_timetable, tableLayout);
-////      insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-////        tabLayout.addView(singleRow);
-//
-//    }
-

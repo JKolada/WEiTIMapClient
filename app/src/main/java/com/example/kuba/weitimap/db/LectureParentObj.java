@@ -1,8 +1,11 @@
 package com.example.kuba.weitimap.db;
 
-public abstract class LectureParentObj {
+import java.io.Serializable;
 
+public abstract class LectureParentObj implements Serializable {
+
+    private static final long serialVersionUID = -826240034398882484L;
     protected String skrót_nazwy_zajęć;
 
-    protected abstract String[] getLectureData();
+    public abstract String[] getLectureData();
 }

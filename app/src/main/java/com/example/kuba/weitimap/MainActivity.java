@@ -3,7 +3,6 @@ package com.example.kuba.weitimap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,22 +17,23 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.kuba.weitimap.db.MyDatabase;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CELL_CLICK = 1;
     private static final String TAG = "MainActivityTAG";
 
-    DrawerLayout mDrawerLayout;
-    MyDatabase mDB;
+    private DrawerLayout mDrawerLayout;
+    private MyDatabase mDB;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
+            navigationView.setItemIconTintList(null);
         }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -61,22 +62,54 @@ public class MainActivity extends AppCompatActivity {
 
         if (viewPager != null) {
             setupViewPager(viewPager);
-            tabLayout.setupWithViewPager(viewPager);
+            if (tabLayout != null) {
+                tabLayout.setupWithViewPager(viewPager);
+            }
         }
 
-        MyDatabase mDbHelper = new MyDatabase(this);
-//        mDbHelper.
+        MyDatabase mDbHelper = MyDatabase.getInstance(getApplicationContext());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                FragmentManager fm = getSupportFragmentManager();
+        Intent intent = getIntent();
+        if (intent == null) {
+            Log.d(TAG, "Activity executed without intention.");
+        }
+
+        final String clicked_cell_value;
+        if (intent != null) {
+            if (intent.getAction().equals(MyAndUtils.MAIN_BACK_ACTION)) {
+
+                Bundle b = intent.getExtras();
+                clicked_cell_value = b.getString(TimetableActivity.CLICKED_CELL_VALUE);
+                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
+                if (clicked_cell_value != "" && clicked_cell_value != null) {
+                    setNavigationPins(clicked_cell_value);
+                }
+
+                ArrayList<String> stringArray = new ArrayList<String>(3);
+                stringArray = b.getStringArrayList(TimetableActivity.CELL_PARAMETERS);
+
+                String par = stringArray.get(0);
+                int row = Integer.parseInt(stringArray.get(1));
+                int col = Integer.parseInt(stringArray.get(2));
+
+//TODO
+//                switch (row) {
 //
-//                MainFragment fragment = (MainFragment)fm.findFragmentById(R.id.);
-//                fragment.yourPublicMethod();
-//            }
-//        });
+//                }
+//
+//                switch (col) {
+//
+//
+//                }
+//
+//                switch (par) {
+//
+//                }
+
+
+
+            }
+        }
 
    }
 
@@ -108,28 +141,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getGroupPlan(String ip, int port, String groupname) {
-//        Toast toast = Toast.makeText(getBaseContext(), "ip = " + ip + ", port = " + port + ", group name = " + groupname , Toast.LENGTH_LONG);
-//        toast.show();
-        Socket socket = null;
-        try {
-            Log.d(TAG, "Socket connecting trial");
-            socket = new Socket(ip, port);
-            Log.d(TAG, "Socket connected");
-//            PrintWriter out =
-//                    new PrintWriter(socket.getOutputStream(), true);
-//            BufferedReader in =
-//                    new BufferedReader(
-//                            new InputStreamReader(socket.getInputStream()));
-//            BufferedReader stdIn =
-//                    new BufferedReader(
-//                            new InputStreamReader(System.in));
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast toast = Toast.makeText(getBaseContext(), "Connection failed" , Toast.LENGTH_LONG);
-            toast.show();
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (REQUEST_CELL_CLICK == requestCode) {
+//            if (Activity.RESULT_OK == resultCode) {
+//                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
+//                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
+//                if (!clicked_cell_value.equals("") && clicked_cell_value != null) {
+//                    setNavigationPins(clicked_cell_value);
+//                }
+//
+//            }
+////            else {
+////                // handle a case where no selection was made
+////            }
+//        } else {
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
 
     private void setupViewPager(ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
@@ -152,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+        final MainActivity mainActivity = this;
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -159,27 +189,43 @@ public class MainActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
 
                         if (menuItem.getItemId() == R.id.download_icon) {
-                           Intent intent = new Intent(MainActivity.this, DownloadActivity.class);
-                            startActivity(intent);
+                            invokeDownload(mainActivity);
                         } else if (menuItem.getItemId() == R.id.plan_icon) {
-                            Intent intent = new Intent(MainActivity.this, TimetableActivity.class);
-                            startActivity(intent);
+                            invokeTimetable(mainActivity);
                         }
-//                      } else if (menuItem.getItemId() == R.id.nav_subsamplingScale) {
-//                            Intent intent = new Intent(MainActivity.this, SubsamplingScaleActivity.class);
-//                            startActivity(intent);
-//                        } else if (menuItem.getItemId() == R.id.nav_gifview) {
-//                            Intent intent = new Intent(MainActivity.this, CustomGifViewActivity.class);
-//                            startActivity(intent);
-//                        } else if (menuItem.getItemId() == R.id.nav_home) {
-//                            Intent intent = new Intent(MainActivity.this, GifActivity.class);
-//                            startActivity(intent);
-
                         return true;
                     }
                 });
     }
 
+    public void invokeTimetable(MainActivity mainAct) {
+        Intent intent = new Intent();
+        intent.setAction(MyAndUtils.TIMETABLE_ACTION);
+        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+        mainAct.startActivity(intent);
+    }
+
+    public void invokeDownload(MainActivity mainAct) {
+        Intent intent = new Intent();
+        intent.setAction(MyAndUtils.DOWNLOAD_ACTION);
+        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
+        mainAct.startActivity(intent);
+    }
+
+    private void setNavigationPins(String text) {
+
+        Pattern p = Pattern.compile("([A-Z]+)[ ]([WLCR])[ ]([0-9A-Z-]+)");
+        Matcher m = p.matcher(text);
+        boolean b = m.matches();
+        if (navigationView != null) {
+//            View blue_pin = navigationView.findViewById(R.id.arrow_blue);
+            navigationView.getMenu().getItem(1).setTitle(text);
+
+//            navigationView.getMenu().get
+
+
+        }
+    }
 
     static class FragmentAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();

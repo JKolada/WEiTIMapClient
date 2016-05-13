@@ -4,12 +4,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/timetable_header"
+        android:id="@+id/n_timetable_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAlignment="center"
-        android:text="Timetable"
+        android:textSize="20sp"
+        android:text="@string/timetable"
         android:stretchColumns="1"/>
 
     <TableLayout
@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textAlignment="center"
         android:stretchColumns="1">
 
         <TableRow
@@ -27,39 +26,48 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
+                android:id="@+id/n_mon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Mon"
-                android:padding="1dp"
+                android:text="@string/Mon"
+                android:textSize="15sp"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/n_tue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Tue"
+                android:textSize="15sp"
                 android:layout_weight="1"/>
             <TextView
+                android:id="@+id/n_wed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Tue"
-                android:padding="1dp"
+                android:text="@string/Wed"
+                android:textSize="15sp"
                 android:layout_weight="1"/>
             <TextView
+                android:id="@+id/n_thu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Wed"
-                android:padding="1dp"
+                android:text="@string/Thu"
+                android:textSize="15sp"
                 android:layout_weight="1"/>
             <TextView
+                android:id="@+id/n_fri"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Thu"
-                android:padding="1dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Fri"
-                android:padding="1dp"
+                android:text="@string/Fri"
+                android:textSize="15sp"
                 android:layout_weight="1"/>
         </TableRow>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -67,45 +75,42 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_8_9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="8-9"
+                android:text="@string/_8_9"
+                android:textSize="13sp"
                 android:padding="1dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/plan_n_1x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
-            <TextView
 
+            <TextView
                 android:id="@+id/plan_n_1x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_1x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_1x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_1x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -115,45 +120,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_9_10"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="9-10"
-                android:padding="1dp"
+                android:text="@string/_9_10"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_2x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_2x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_2x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_2x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_2x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -163,45 +164,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_10_11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="10-11"
-                android:padding="1dp"
+                android:text="@string/_10_11"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_3x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_3x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_3x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_3x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_3x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -211,45 +208,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_11_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="11-12"
-                android:padding="1dp"
+                android:text="@string/_11_12"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_4x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_4x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_4x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_4x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_4x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -260,45 +253,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_12_13"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="12-13"
-                android:padding="1dp"
+                android:text="@string/_12_13"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_5x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_5x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_5x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_5x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_5x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
         </TableRow>
@@ -310,45 +299,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_13_14"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="13-14"
-                android:padding="1dp"
+                android:text="@string/_13_14"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_6x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_6x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_6x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_6x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_6x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -358,45 +343,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_14_15"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="14-15"
-                android:padding="1dp"
+                android:text="@string/_14_15"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_7x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_7x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_7x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_7x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_7x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -406,45 +387,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_15_16"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="15-16"
-                android:padding="1dp"
+                android:text="@string/_15_16"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_8x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_8x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_8x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_8x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_8x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -454,45 +431,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_16_17"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="16-17"
-                android:padding="1dp"
+                android:text="@string/_16_17"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_9x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_9x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_9x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_9x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_9x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -502,45 +475,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_17_18"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="17-18"
-                android:padding="1dp"
+                android:text="@string/_17_18"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_10x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_10x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_10x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_10x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_10x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -551,45 +520,41 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_18_19"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="18-19"
-                android:padding="1dp"
+                android:text="@string/_18_19"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_11x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_11x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_11x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_11x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_11x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
@@ -599,71 +564,44 @@
             android:padding="1dp">
 
             <TextView
+                android:id="@+id/n_19_20"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="19-20"
-                android:padding="1dp"
+                android:text="@string/_19_20"
+                android:textSize="13sp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_12x1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
             <TextView
 
                 android:id="@+id/plan_n_12x2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_12x3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_12x4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/plan_n_12x5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="1dp"
                 android:layout_weight="1"/>
         </TableRow>
 
     </TableLayout>
-
-
-
-
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"></TableRow>-->
-
-
-
-
 
 </LinearLayout>
