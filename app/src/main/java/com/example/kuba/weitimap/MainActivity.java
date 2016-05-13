@@ -1,7 +1,6 @@
 package com.example.kuba.weitimap;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.kuba.weitimap.db.GroupPlanObject;
 import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
@@ -47,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
-//            ab.setHomeAsUpIndicator(R.drawable.ic_menu); TODO
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -80,22 +77,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
         String clickedCellValue = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_VALUE, "null");
         if (clickedCellValue != "null") {
-            setNavigationPins(clickedCellValue);
+            setNavigationPin(clickedCellValue);
         }
 
 
-//        final String clicked_cell_value;
-//        if (intent != null) {
-//            if (intent.getAction().equals(MyAndUtils.MAIN_BACK_ACTION)) {
-//
-//
-//                Bundle b = intent.getExtras();
-//                String clicked_cell_value = b.getString(TimetableActivity.CLICKED_CELL_VALUE);
-//                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
-//                if (clicked_cell_value != "" && clicked_cell_value != null) {
-//                    setNavigationPins(clicked_cell_value);
-//                }
-//
 //                ArrayList<String> stringArray = new ArrayList<String>(3);
 //                stringArray = b.getStringArrayList(TimetableActivity.CELL_PARAMETERS);
 //
@@ -105,29 +90,20 @@ public class MainActivity extends AppCompatActivity {
 //
 ////TODO
 ////                switch (row) {
-////
 ////                }
 ////
 ////                switch (col) {
-////
-////
 ////                }
 ////
 ////                switch (par) {
-////
 ////                }
-//
-//
-//
-//            }
-//        }
 
    }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -159,13 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
                 Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
                 if (clicked_cell_value != null && clicked_cell_value != "") {
-                    setNavigationPins(clicked_cell_value);
+                    setNavigationPin(clicked_cell_value);
                 }
-
             }
-//            else {
-//                // handle a case where no selection was made
-//            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -203,38 +175,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void invokeTimetable(MainActivity mainAct) {
-//        Intent intent = new Intent();
-//        intent.setAction(MyAndUtils.TIMETABLE_ACTION);
-//        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
-//        mainAct.startActivity(intent);
-
         Intent i = new Intent(this, TimetableActivity.class);
         startActivityForResult(i, REQUEST_CELL_CLICK);
     }
 
     public void invokeDownload(MainActivity mainAct) {
-//        Intent intent = new Intent();
-//        intent.setAction(MyAndUtils.DOWNLOAD_ACTION);
-//        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
-//        mainAct.startActivity(intent);
-
         Intent i = new Intent(this, DownloadActivity.class);
         startActivityForResult(i, REQUEST_CELL_CLICK);
-
     }
 
-    private void setNavigationPins(String text) {
-
-        Pattern p = Pattern.compile("([A-Z]+)[ ]([WLCR])[ ]([0-9A-Z-]+)");
+    private void setNavigationPin(String text) {
+        Pattern p = Pattern.compile(MyAndUtils.CELL_TEXT_REGEXP);
         Matcher m = p.matcher(text);
         boolean b = m.matches();
         if (navigationView != null) {
-//            View blue_pin = navigationView.findViewById(R.id.arrow_blue);
             navigationView.getMenu().getItem(1).setTitle(text);
-
-//            navigationView.getMenu().get
-
-
         }
     }
 

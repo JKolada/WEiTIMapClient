@@ -47,11 +47,6 @@ public class DownloadActivity extends Activity {
 
         thisActivity = this;
 
-//        Intent intent = getIntent();
-        if (getIntent() == null) {
-            Log.w(TAG, "Activity executed without intention");
-        }
-
         TableLayout layout = (TableLayout) findViewById(R.id.download_layout);
         downloadButton = (Button) layout.findViewById(R.id.download_button);
         final EditText ipEditText = (EditText) layout.findViewById(R.id.address_ip);
@@ -90,14 +85,14 @@ public class DownloadActivity extends Activity {
                 };
 
                 String message = "";
-                Pattern p = Pattern.compile("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
+                Pattern p = Pattern.compile(MyAndUtils.IP_REGEXP);
                 Matcher m = p.matcher(ip);
 
                 if (!m.matches()) {
                     message = "Invalid ip address";
                 }
 
-                p = Pattern.compile("^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$");
+                p = Pattern.compile(MyAndUtils.PORT_REGEXP);
                 m = p.matcher(port);
                 if (!m.matches()) {
                     if (message == "") {
@@ -135,13 +130,13 @@ public class DownloadActivity extends Activity {
                     if (a) {
                         downloadButton.setText("Download group plan");
                         downloadButton.setTextColor(Color.BLACK);
-                        downloadButton.setEnabled(a);
-                        downloadButton.setClickable(a);
+                        downloadButton.setEnabled(true);
+                        downloadButton.setClickable(true);
                     } else {
                         downloadButton.setText("Downloading group plan");
                         downloadButton.setTextColor(Color.GRAY);
-                        downloadButton.setEnabled(a);
-                        downloadButton.setClickable(a);
+                        downloadButton.setEnabled(false);
+                        downloadButton.setClickable(false);
                     }
                 }
             }

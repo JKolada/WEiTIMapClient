@@ -102,8 +102,6 @@ public class TimetableActivity extends AppCompatActivity {
         editor.commit();
 
         Intent i = new Intent();
-//        i.setAction(MyAndUtils.MAIN_BACK_ACTION);
-//        i.addCategory(MyAndUtils.CATEGORY_DEFAULT);
 
         Bundle b = new Bundle();
         b.putString(CLICKED_CELL_VALUE, text);
@@ -114,7 +112,6 @@ public class TimetableActivity extends AppCompatActivity {
         i.putExtras(b);
 
         setResult(RESULT_OK, i);
-//        startActivity(i);
         finish();
     }
 
