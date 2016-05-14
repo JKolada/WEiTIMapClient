@@ -19,7 +19,9 @@ import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Kuba on 2016-04-05.
@@ -28,7 +30,7 @@ public class TimetableActivity extends AppCompatActivity {
 
     public static final String TAG = "TimetableActivityTAG";
     public static final String CLICKED_CELL_VALUE = "TimetableActivity.CLICKED_CELL_VALUE";
-    public static final String CELL_PARAMETERS = "TimetableActivity.CELL_PARAMETERS";
+    public static final String CLICKED_CELL_CELL_ARRAY = "TimetableActivity.CELL_PARAMETERS";
 
     ArrayList<TextView> timetableData = new ArrayList<TextView>();
     FragmentAdapter mFragmentAdapter;
@@ -46,13 +48,6 @@ public class TimetableActivity extends AppCompatActivity {
             setupViewPager(viewPager);
             tabLayout.setupWithViewPager(viewPager);
         }
-
-        if (getIntent() == null) {
-            Log.d(TAG, "Activity executed without intention");
-        } else {
-            Log.d(TAG, "Activity executed with intention");
-        }
-
     }
 
     @Override
@@ -75,10 +70,9 @@ public class TimetableActivity extends AppCompatActivity {
 
     public void returnWithCellClicked(int EditTextId, String text) {
 
+//        ArrayList<String> params = new ArrayList<String>(3);
 
-        setAlarm();
-        ArrayList<String> params = new ArrayList<String>(3);
-
+        ArrayList<String> paramArray = new ArrayList<String>(3);
 
         char[] parity = {'p', 'n'};
         for (char par : parity) {
@@ -87,9 +81,9 @@ public class TimetableActivity extends AppCompatActivity {
                     String Rid = "plan_" + par + "_" + row + "x" + col;
                     int resID = getResources().getIdentifier(Rid, "id", this.getPackageName());
                     if (EditTextId == resID) {
-                        params.add(Character.toString(par));
-                        params.add(Integer.toString(row));
-                        params.add(Integer.toString(col));
+                        paramArray.add(Character.toString(par));
+                        paramArray.add(Integer.toString(row));
+                        paramArray.add(Integer.toString(col));
                         Log.d(TAG, "EditText params: " + Character.toString(par) + " " + Integer.toString(row) + " " + Integer.toString(col));
                     }
                 }
@@ -99,16 +93,17 @@ public class TimetableActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(MyAndUtils.LAST_CLICKED_CELL_VALUE, text);
+        editor.putString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "PAR", paramArray.get(0));
+        editor.putString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "ROW", paramArray.get(1));
+        editor.putString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "COL", paramArray.get(2));
         editor.commit();
 
         Intent i = new Intent();
 
         Bundle b = new Bundle();
         b.putString(CLICKED_CELL_VALUE, text);
-// todo
-//        if (params != null) {
-//            b.putStringArrayList(CELL_PARAMETERS, params);
-//        }
+        b.putStringArrayList(CLICKED_CELL_CELL_ARRAY, paramArray);
+
         i.putExtras(b);
 
         setResult(RESULT_OK, i);
@@ -136,52 +131,6 @@ public class TimetableActivity extends AppCompatActivity {
 
         viewPager.setAdapter(mFragmentAdapter);
     }
-
-    private void setAlarm(){
-
-        Calendar c = Calendar.getInstance();
-        int seconds = c.get(Calendar.SECOND);
-
-//        cal.set(Calendar.DATE,date);
-//        cal.set(Calendar.MONTH,month-1);
-//        cal.set(Calendar.YEAR,year);
-//        cal.set(Calendar.HOUR_OF_DAY, hour);
-//        cal.set(Calendar.MINUTE, minute);
-
-        int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
-        int month = c.get(Calendar.MONTH);
-        int day_of_month = c.get(Calendar.DAY_OF_MONTH);
-        int day_of_week = c.get(Calendar.DAY_OF_WEEK);
-
-        char par = ' ';
-        if
-            (
-                (month == Calendar.MAY && ((day_of_month >= 16 && day_of_month <= 20) || (day_of_month >= 30)) )
-                || (month == Calendar.JUNE && (day_of_month >= 13 && day_of_month <= 14))
-            )
-            par = 'p';
-        else if
-            (
-                (month == Calendar.MAY && ((day_of_month >= 23 && day_of_month <= 27)))
-                 || (month == Calendar.JUNE && ((day_of_month >= 6 && day_of_month <= 10) || (day_of_month >= 15 && day_of_month <= 16)))
-            )
-            par = 'n';
-
-        Log.d(TAG, "hour: " + hour_of_day + " " + month + " " + day_of_month + " " + day_of_week);
-        Log.d(TAG, "parity: " + par);
-
-//        Intent intent = new Intent(this, OnetimeAlarmReceiver.class);
-//
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, 0);
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + alarm_time , pendingIntent);
-//        System.out.println("Time Total ----- "+(System.currentTimeMillis()+total_mili));
-
-
-    }
-
-
 
     static class FragmentAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();

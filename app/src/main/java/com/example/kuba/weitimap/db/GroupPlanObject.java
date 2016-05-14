@@ -2,15 +2,15 @@ package com.example.kuba.weitimap.db;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GroupPlanObject implements Serializable{
 
     private static final long serialVersionUID = 2366854110722067579L;
 
     private char parzystosc_tabeli;
-    private final String nazwa_grupy;
-    private final List<LectureObj> zajecia = new ArrayList<LectureObj>();
+    private String nazwa_grupy;
+
+    private ArrayList<LectureObj> zajecia = new ArrayList<LectureObj>();
 
     public GroupPlanObject(String nazwa_gr) {
         nazwa_grupy = nazwa_gr;
@@ -18,6 +18,10 @@ public class GroupPlanObject implements Serializable{
 
     GroupPlanObject() {
         nazwa_grupy = "error";
+    }
+
+    public void setGroupName(String group) {
+        nazwa_grupy = group;
     }
 
     public String getGroupName() {
@@ -28,7 +32,11 @@ public class GroupPlanObject implements Serializable{
         zajecia.add(myLecture);
     }
 
-    public List<LectureObj> getLectureArray() {
+    public void setLectureArray(ArrayList<LectureObj> lectures) {
+        zajecia = lectures;
+    }
+
+    public ArrayList<LectureObj> getLectureArray() {
         return zajecia;
     }
 
@@ -83,7 +91,6 @@ public class GroupPlanObject implements Serializable{
                     break;
             }
             data[row_no][col_no] = poj_zaj_info[4] + " " + poj_zaj_info[5] + " " + poj_zaj_info[0];
-//			System.out.println(row_no + " " + col_no + " " + data[row_no][col_no]); //TO DELETE
         }
 
     }

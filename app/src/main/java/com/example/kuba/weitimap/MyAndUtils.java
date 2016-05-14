@@ -12,6 +12,7 @@ public class MyAndUtils {
     public final static String MY_PREFERENCES = "com.example.kuba.weitimap";
     public final static String LAST_INSERTED_GROUP_NAME = "LAST_INSERTED_GROUP_NAME";
     public final static String LAST_CLICKED_CELL_VALUE = "LAST_CLICKED_CELL_VALUE";
+    public final static String LAST_CLICKED_CELL_ARRAY = "LAST_CLICKED_CELL_ARRAY_";
 
     public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
     public final static String THINKPAD_DEFAULT_IP = "192.168.1.104";
@@ -20,7 +21,6 @@ public class MyAndUtils {
     public final static String EMAIL_ADDRESS = "jakubkoladadev@gmail.com";
     public final static String GROUP_EXISTS = "GROUP_EXISTS";
     public final static String GROUP_DOESNT_EXIST = "GROUP_DOESNT_EXIST";
-
 
     public final static String PORT_REGEXP = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
     public final static String IP_REGEXP = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$";
@@ -31,6 +31,8 @@ public class MyAndUtils {
     public final static String MSG_TYPES_REGEXP =   HANDSHAKE_MSG_TYPE + '|' +
                                                     GET_GROUP_MSG_TYPE + '|' +
                                                     SEND_GROUP_MSG_TYPE;
+
+    public final static String MAIN_FRAGMENT_TAG = "MAIN_FRAGMENT_TAG";
 
     public final static String[] WEEK_DAYS_IDS = {"mon", "tue", "wed", "thu", "fri"};
     public final static String[] HOURS_IDS = {"_8_9", "_9_10", "_10_11", "_11_12", "_12_13",

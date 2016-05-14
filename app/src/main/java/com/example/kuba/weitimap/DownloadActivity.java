@@ -148,14 +148,15 @@ public class DownloadActivity extends Activity {
     public void startTimetableActivity() {
 
         SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+        String oldGroupName = prefs.getString(MyAndUtils.LAST_INSERTED_GROUP_NAME, "null");
+        String newGroupName = MyDatabase.getDownloadedGroupName();
 
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(MyAndUtils.LAST_INSERTED_GROUP_NAME, MyDatabase.getDownloadedGroupName());
-        editor.commit();
-
-//        Intent intent = new Intent();
-//        startActivityForResult(intent, MainActivity.REQUEST_CELL_CLICK);
-//        this.startActivity(intent);
+        if (!oldGroupName.equals(newGroupName)) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove(MyAndUtils.LAST_CLICKED_CELL_VALUE);
+            editor.putString(MyAndUtils.LAST_INSERTED_GROUP_NAME, MyDatabase.getDownloadedGroupName());
+            editor.commit();
+        }
 
         Intent i = new Intent(this, TimetableActivity.class);
         startActivityForResult(i,  MainActivity.REQUEST_CELL_CLICK);
@@ -166,17 +167,8 @@ public class DownloadActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (MainActivity.REQUEST_CELL_CLICK == requestCode) {
             if (Activity.RESULT_OK == resultCode) {
-                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
-                Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
-//                if (!click    ed_cell_value.equals("") && clicked_cell_value != null) {
-//                    setNavigationPins(clicked_cell_value);
-//                }
                 finish();
-
             }
-//            else {
-//                // handle a case where no selection was made
-//            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

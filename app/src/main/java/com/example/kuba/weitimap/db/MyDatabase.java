@@ -192,39 +192,36 @@ public class MyDatabase extends SQLiteOpenHelper {
         mDB.execSQL(query);
     }
 
-//
-//    public void updatePlanCell(int row, int col, GroupPlanObject planObject, char p, String cellValue) {
-//
-//        if (cellValue == null) {		//
-//            String nazwa_grupy = planObject.getGroupName();
-//
-//            String query = "DELETE FROM tb_plan WHERE 1=1 " +
-//                    "AND grupa_id = (SELECT grupa_id FROM tb_grupy WHERE nazwa_grupy = '" + nazwa_grupy +"') "+
-//                    "AND dzien_tyg_id  = " + (col) + " " +
-//                    "AND godz_id = " + (row+8) + " " +
-//                    "AND parzystosc IN ('" + p +"', 'X')";
-////            executeQuery(query);
-//
-//        } else {
-//            Pattern pattern = Pattern.compile("([A-Z]+)[ ]([WLCR])[ ]([0-9A-Z-]+)");
-//            Matcher m = pattern.matcher(cellValue);
-//            m.matches();
-//
-//            String nazwa_zajec = m.group(1);
-//            String rodzaj_zajec = m.group(2);
-//            String nazwa_sali = m.group(3);
-//
-//            String query =
-//                    "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-//                            "SELECT a.grupa_id, " + (col) + ", " + (row+8) + ", d.id_zajec, '" + rodzaj_zajec + "', e.sala_id, '" + p + "' " +
-//                            "FROM tb_grupy a, tb_zajecia d, tb_sale e " +
-//                            "WHERE a.nazwa_grupy = '" + planObject.getGroupName() + "' " +
-//                            "AND d.skrot_nazwy_zajec = '" + nazwa_zajec + "' " +
-//                            "AND e.nazwa_sali = '" + nazwa_sali +"'";
-//
-////            executeQuery(query);
-//        };
-//    }
+    public LectureObj getLectureObj(String groupName, int hour_of_day, char par, String day_name) {
+        String query =
+        "SELECT * FROM vw_plan " +
+        "WHERE nazwa_grupy = '" + groupName + "' " +
+        "AND godz_id >= " + hour_of_day + " " +
+        "AND parzystosc IN ('X', '" + par + "') " +
+        "AND nazwa_dnia = '" + day_name + "' " +
+        "ORDER BY godz_id ASC";
+
+        mDB = getReadableDatabase();
+        Cursor c = mDB.rawQuery(query, null);
+        LectureObj LectureObjRet = null;
+
+        if (c != null && c.moveToFirst()) {
+            List<String> pojedyncze_zajecia = new ArrayList<String>();
+            for (int k = 1; k < MyDatabaseUtilities.PLAN_VIEW_COL_NAMES.length; k++) {
+                pojedyncze_zajecia.add(c.getString(k));
+            }
+            LectureObjRet = new LectureObj((ArrayList<String>) pojedyncze_zajecia);
+            String[] lecture_data = LectureObjRet.getLectureData();
+            Log.d(TAG, "getGroupObject: " + lecture_data[1] + " " + lecture_data[2] + " " + lecture_data[3] + " " + lecture_data[4] + " " + lecture_data[5]);
+        } else {
+            Log.d(TAG, "Result set is closed");
+            mDB.close();
+            return null;
+        }
+        c.close();
+        mDB.close();
+        return LectureObjRet;
+    }
 }
 
 
