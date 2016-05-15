@@ -12,16 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.kuba.weitimap.db.GroupPlanObject;
 import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Kuba on 2016-04-05.
@@ -32,7 +29,6 @@ public class TimetableActivity extends AppCompatActivity {
     public static final String CLICKED_CELL_VALUE = "TimetableActivity.CLICKED_CELL_VALUE";
     public static final String CLICKED_CELL_CELL_ARRAY = "TimetableActivity.CELL_PARAMETERS";
 
-    ArrayList<TextView> timetableData = new ArrayList<TextView>();
     FragmentAdapter mFragmentAdapter;
 
 
@@ -53,26 +49,14 @@ public class TimetableActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            invokeMain(this);
-            Intent returnIntent = new Intent();
-            setResult(RESULT_OK, returnIntent);
+            setResult(RESULT_CANCELED);
             finish();
         }
         return super.onKeyDown(keyCode, event);
     }
 
-//    public void invokeMain(TimetableActivity mainAct) {
-//        Intent intent = new Intent();
-//        intent.setAction(MyAndUtils.MAIN_BACK_ACTION);
-//        intent.addCategory(MyAndUtils.CATEGORY_DEFAULT);
-//        mainAct.startActivity(intent);
-//    }
-
     public void returnWithCellClicked(int EditTextId, String text) {
-
-//        ArrayList<String> params = new ArrayList<String>(3);
-
-        ArrayList<String> paramArray = new ArrayList<String>(3);
+        ArrayList<String> paramArray = new ArrayList<>(3);
 
         char[] parity = {'p', 'n'};
         for (char par : parity) {
@@ -90,8 +74,17 @@ public class TimetableActivity extends AppCompatActivity {
             }
         }
 
+
         SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
         SharedPreferences.Editor editor = prefs.edit();
+
+        Pattern p = Pattern.compile(MyAndUtils.CELL_TEXT_REGEXP);
+        Matcher m = p.matcher(text);
+        boolean bool = m.matches();
+        if (bool) {
+            editor.putString(MyAndUtils.BLUE_PIN_ROOM, m.group(3));
+        }
+
         editor.putString(MyAndUtils.LAST_CLICKED_CELL_VALUE, text);
         editor.putString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "PAR", paramArray.get(0));
         editor.putString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "ROW", paramArray.get(1));

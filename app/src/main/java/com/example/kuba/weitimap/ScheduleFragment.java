@@ -82,8 +82,7 @@ public class ScheduleFragment extends Fragment {
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mainActivity.returnWithCellClicked(v.getId(), (String) ((TextView) v).getText());
+            mainActivity.returnWithCellClicked(v.getId(), (String) ((TextView) v).getText());
             }
         };
         plugCellsListener(mainListener);

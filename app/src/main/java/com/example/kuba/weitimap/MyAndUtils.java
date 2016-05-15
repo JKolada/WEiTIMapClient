@@ -2,17 +2,12 @@ package com.example.kuba.weitimap;
 
 public class MyAndUtils {
 
-//    public enum clientResult {GROUP_INSERTED, SOCKET_ERROR, SOCKET_THREAD_ERROR, GROUP_DOESNT_EXIST}
-
-//    public final static String DOWNLOAD_ACTION = "com.example.kuba.weitimap.DOWNLOAD";
-//    public final static String MAIN_BACK_ACTION =  "com.example.kuba.weitimap.MAIN_BACK";
-//    public final static String TIMETABLE_ACTION = "com.example.kuba.weitimap.TIMETABLE";
-//    public final static String CATEGORY_DEFAULT = "android.intent.category.DEFAULT";
-
     public final static String MY_PREFERENCES = "com.example.kuba.weitimap";
     public final static String LAST_INSERTED_GROUP_NAME = "LAST_INSERTED_GROUP_NAME";
     public final static String LAST_CLICKED_CELL_VALUE = "LAST_CLICKED_CELL_VALUE";
     public final static String LAST_CLICKED_CELL_ARRAY = "LAST_CLICKED_CELL_ARRAY_";
+    public final static String RED_PIN_ROOM = "RED_PIN_ROOM";
+    public final static String BLUE_PIN_ROOM = "BLUE_PIN_ROOM";
 
     public final static String ASUS_VANTAGE_DEFAULT_IP = "192.168.0.172";
     public final static String THINKPAD_DEFAULT_IP = "192.168.1.104";
@@ -55,6 +50,8 @@ public class MyAndUtils {
     }
 
     public final static int MAP_COUNT = 7; // {-1, 0, 1, 2, 3, 4, 5}
+
+
     public final static String[] FLOOR_MAP_NAMES =
                     {"piwnica.jpg",
                     "parter.jpg",
@@ -63,4 +60,6 @@ public class MyAndUtils {
                     "pietro3.jpg",
                     "pietro4.jpg",
                     "pietro5.jpg"};
+
+
 }

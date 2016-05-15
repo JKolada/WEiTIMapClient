@@ -24,22 +24,23 @@ import com.example.kuba.weitimap.db.MyDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.example.kuba.weitimap.MyAndUtils.BLUE_PIN_ROOM;
+import static com.example.kuba.weitimap.MyAndUtils.MY_PREFERENCES;
+import static com.example.kuba.weitimap.MyAndUtils.RED_PIN_ROOM;
 
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_CELL_CLICK = 1;
+    private static final String FIRST_RUN = "FIRST_RUN";
     private static final String TAG = "MainActivityTAG";
 
     private DrawerLayout mDrawerLayout;
     private MyDatabase mDB;
     private NavigationView navigationView;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
             navigationView.setItemIconTintList(null);
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        setRedNavPin();
+        setBlueNavPin();
 
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         if (viewPager != null) {
             setupViewPager(viewPager);
@@ -71,47 +74,19 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.setupWithViewPager(viewPager);
             }
         }
-
         mDB = MyDatabase.getInstance(getApplicationContext());
 
-        Intent intent = getIntent();
-        if (intent == null) {
-            Log.d(TAG, "Activity executed without intention.");
+        SharedPreferences prefs = getSharedPreferences(MY_PREFERENCES, 0);
+        if (prefs.getBoolean(FIRST_RUN, true)) {
+            prefs.edit().putBoolean(FIRST_RUN, false).commit();
+            viewPager.setCurrentItem(1);
         }
 
-        setRedNavPin();
-
-        SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
-        String clickedCellValue = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_VALUE, null);
-
-        if (clickedCellValue == null) return;
-        else {
-            String par = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "PAR", null);
-            String rowStr = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "ROW", null);
-            String colStr = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "COL", null);
-
-            if (par == null || rowStr == null || colStr == null) return;
-            else {
-                int row = Integer.parseInt(rowStr) + 7;
-                int col = Integer.parseInt(colStr);
-
-                String dayName;
-                dayName = MyAndUtils.WEEK_DAYS_IDS[col-1].substring(0, 1).toUpperCase()
-                        + MyAndUtils.WEEK_DAYS_IDS[col-1].substring(1);
-
-                if (clickedCellValue != "null") {
-                    setBlueNavPin(dayName + " " + row + ":15 " + clickedCellValue);
-                }
-            }
-        }
-
-
-   }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-//TODO
         setRedNavPin();
     }
 
@@ -147,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (REQUEST_CELL_CLICK == requestCode) {
             if (RESULT_OK == resultCode) {
-                final String clicked_cell_value  = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
+                final String clicked_cell_value = data.getStringExtra(TimetableActivity.CLICKED_CELL_VALUE);
                 final ArrayList<String> params = data.getStringArrayListExtra(TimetableActivity.CLICKED_CELL_CELL_ARRAY);
 
                 Log.d(TAG, "clicked_cell_value: " + clicked_cell_value);
@@ -157,10 +132,11 @@ public class MainActivity extends AppCompatActivity {
                     int col = Integer.parseInt(params.get(2));
 
                     String dayName;
-                    dayName = MyAndUtils.WEEK_DAYS_IDS[col].substring(0, 1).toUpperCase()
-                        + MyAndUtils.WEEK_DAYS_IDS[col].substring(1, MyAndUtils.WEEK_DAYS_IDS[col].length());
+                    dayName = MyAndUtils.WEEK_DAYS_IDS[col - 1].substring(0, 1).toUpperCase()
+                            + MyAndUtils.WEEK_DAYS_IDS[col - 1].substring(1, MyAndUtils.WEEK_DAYS_IDS[col - 1].length());
 
                     setBlueNavPin(dayName + " " + row + ":15 " + clicked_cell_value);
+                    setCurrentTab(PinView.pinColor.PIN_BLUE);
                 }
             }
         } else {
@@ -176,13 +152,18 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putString("floor_name", MyAndUtils.FLOOR_MAP_NAMES[i]);
             fragment.setArguments(bundle);
-            adapter.addFragment(fragment, Integer.toString(i-1));
+            adapter.addFragment(fragment, Integer.toString(i - 1));
         }
         viewPager.setAdapter(adapter);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
         final MainActivity mainActivity = this;
+
+        for (int i = 0; i < 4; i++) {
+            navigationView.getMenu().getItem(i).setCheckable(false);
+        }
+
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -194,14 +175,15 @@ public class MainActivity extends AppCompatActivity {
                         } else if (menuItem.getItemId() == R.id.plan_icon) {
                             invokeTimetable(mainActivity);
                         } else if (menuItem.getItemId() == R.id.arrow_red) {
-//                            invokeTimetable(mainActivity);
+                            setCurrentTab(PinView.pinColor.PIN_RED);
                         } else if (menuItem.getItemId() == R.id.arrow_blue) {
-//                            invokeTimetable(mainActivity);
+                            setCurrentTab(PinView.pinColor.PIN_BLUE);
                         }
                         return true;
                     }
                 });
     }
+
 
     public void invokeTimetable(MainActivity mainAct) {
         Intent i = new Intent(this, TimetableActivity.class);
@@ -213,21 +195,75 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_CELL_CLICK);
     }
 
+
+    private void setCurrentTab(PinView.pinColor pinColor) {
+        mDB = MyDatabase.getInstance(this);
+        SharedPreferences prefs = this.getSharedPreferences(MY_PREFERENCES, 0);
+        String pinRoom = new String();
+        switch (pinColor) {
+            case PIN_BLUE:
+                pinRoom = prefs.getString(BLUE_PIN_ROOM, null);
+                break;
+            case PIN_RED:
+                pinRoom = prefs.getString(RED_PIN_ROOM, null);
+                break;
+        }
+        if (pinRoom != null) {
+            int[] roomDetails = new int[3];
+            roomDetails = mDB.getRoomDetails(pinRoom);
+            if (viewPager != null) {
+                viewPager.setCurrentItem(roomDetails[0] + 1);
+            }
+        }
+
+    }
+
     private void setBlueNavPin(String text) {
-        Pattern p = Pattern.compile(MyAndUtils.CELL_TEXT_REGEXP);
-        Matcher m = p.matcher(text);
-        boolean b = m.matches();
-        if (navigationView != null) {
+        if (text != null && navigationView != null) {
             navigationView.getMenu().getItem(1).setTitle(text);
         }
     }
 
-    private void setRedNavPin() {
+    private void setBlueNavPin() {
+        SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+        String clickedCellValue = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_VALUE, null);
 
+        if (clickedCellValue == null) return;
+        else {
+            String par = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "PAR", null);
+            String rowStr = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "ROW", null);
+            String colStr = prefs.getString(MyAndUtils.LAST_CLICKED_CELL_ARRAY + "COL", null);
+
+            if (par == null || rowStr == null || colStr == null) return;
+            else {
+                int row = Integer.parseInt(rowStr) + 7;
+                int col = Integer.parseInt(colStr);
+
+                String dayName;
+                dayName = MyAndUtils.WEEK_DAYS_IDS[col - 1].substring(0, 1).toUpperCase()
+                        + MyAndUtils.WEEK_DAYS_IDS[col - 1].substring(1);
+
+                if (clickedCellValue != "null" && navigationView != null) {
+                    navigationView.getMenu().getItem(1).setTitle(dayName + " " + row + ":15 " + clickedCellValue);
+                }
+            }
+        }
+    }
+
+    private void removeRedPref() {
+        SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
+        SharedPreferences.Editor e = prefs.edit();
+        e.remove(MyAndUtils.RED_PIN_ROOM);
+    }
+
+    private void setRedNavPin() {
         SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
         String groupName = prefs.getString(MyAndUtils.LAST_INSERTED_GROUP_NAME, "null");
 
-        if (groupName == "null") return;
+        if (groupName == "null") {
+            removeRedPref();
+            return;
+        }
 
         Calendar c = Calendar.getInstance();
 
@@ -247,7 +283,10 @@ public class MainActivity extends AppCompatActivity {
 //                    || (month == Calendar.JUNE && ((day_of_month >= 6 && day_of_month <= 10) || (day_of_month >= 15 && day_of_month <= 16)))
 //                )
 //            par = 'N';
-//        else return;
+//        else {
+//        removeRedPref();
+//           return;
+//    }
 
         int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
 
@@ -275,16 +314,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
             default:
                 day_name = "";
+//                removeRedPref();
 //                return;
 
         }
 
 //        if (navigationView != null) {
-//            if (hour_of_day < 5)
+//            if (hour_of_day < 5) {
 //                navigationView.getMenu().getItem(0).setTitle("It's too early");
-//            else if (hour_of_day > 19)
+//                removeRedPref();
+//                return;
+//            } else if (hour_of_day > 19) {
 //                navigationView.getMenu().getItem(0).setTitle("It's after classes");
-//            return;
+//                removeRedPref();
+//                return;
+//            }
 //        }
 
         if (hour_of_day < 8) hour_of_day = 8;
@@ -293,37 +337,34 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "getLectureObj: " + groupName + " " + hour_of_day + " " + par + " " + day_name); //TODO DELETE
         mDB = MyDatabase.getInstance(getApplicationContext());
 
-        hour_of_day = 8; par = 'P'; day_name = "poniedziałek"; //TODO DELETE
+        hour_of_day = 5;
+        par = 'P';
+        day_name = "poniedziałek"; //TODO DELETE
 
         LectureObj lecture = mDB.getLectureObj(groupName, hour_of_day, par, day_name);
-
+        // TODO obsługa gdy w ciągu całego dnia nie ma zajęć
 
         String[] lectureData = new String[6];
         if (lecture == null) {
             Log.d(TAG, "wrócił null!");
+            removeRedPref();
             return;
-        }
-        else {
+        } else {
             lectureData = lecture.getLectureData();
+
+            SharedPreferences.Editor e = prefs.edit();
+            e.putString(MyAndUtils.RED_PIN_ROOM, lectureData[0]);
+            e.commit();
+
             Log.d(TAG, lectureData[0] + " " + lectureData[1] + " " + lectureData[2] + " " + lectureData[3] + " " + lectureData[4] + " " + lectureData[5]);
             //{nazwa_sali, nazwa_dnia, id_godziny, parzystość, skrót_nazwy_zajęć, rodz_zajęć};
+
 
             if (navigationView != null) {
                 navigationView.getMenu().getItem(0).setTitle(lectureData[2] + ":15 " + lectureData[4] + " " + lectureData[5] + " " + lectureData[0]);
             }
+            setCurrentTab(PinView.pinColor.PIN_RED);
         }
-
-
-//        MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentByTag(MyAndUtils.MAIN_FRAGMENT_TAG);
-//        fragment.setPin(lectureData[0]);
-
-//        Intent intent = new Intent(this, OnetimeAlarmReceiver.class);
-//
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, 0);
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + alarm_time , pendingIntent);
-//        System.out.println("Time Total ----- "+(System.currentTimeMillis()+total_mili));
     }
 
 

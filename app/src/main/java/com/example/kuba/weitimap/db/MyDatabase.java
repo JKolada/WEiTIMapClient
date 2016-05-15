@@ -125,6 +125,29 @@ public class MyDatabase extends SQLiteOpenHelper {
 //        return nazwy_grup.toArray(new String[nazwy_grup.size()]);
 //    }
 //
+
+    public int[] getRoomDetails(String room_name) {
+        int[] returnData = new int[3];
+
+        String query = "SELECT pietro_sali, mapa_x, mapa_y FROM tb_sale WHERE nazwa_sali = '" + room_name +"'";
+        mDB = getReadableDatabase();
+        Cursor c = mDB.rawQuery(query, null);
+
+        if (c != null && c.moveToFirst()) {
+            for (int k = 0; k < 3; k++) {
+                returnData[k] = c.getInt(k);
+            }
+//            Log.d(TAG, "getRoomDetails: " + returnData[0] + " " + returnData[1] + " " + returnData[2]);
+        } else {
+            Log.d(TAG, "Result set is closed");
+            mDB.close();
+            return null;
+        }
+        c.close();
+        mDB.close();
+        return returnData;
+    }
+
     public GroupPlanObject getGroupPlanObject(String group_name) {
         mDB = getReadableDatabase();
         String query = "SELECT * FROM vw_plan WHERE nazwa_grupy = '" + group_name +"'";

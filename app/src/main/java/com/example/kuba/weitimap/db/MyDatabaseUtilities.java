@@ -149,139 +149,42 @@ public final class MyDatabaseUtilities {
     public final static String TB_GRUPY_TEST_INSERT_1 =
             "INSERT INTO tb_grupy (nazwa_grupy) VALUES ('2T2')";
 
-    public final static String TB_ZAJECIA_TEST_INSERTS =
-            "INSERT INTO tb_zajecia (skrot_nazwy_zajec, nazwa_zajec) VALUES " +
-                    "('ALGTM', 'Algebra i teoria mnogości'), " +
-                    "('ANL1', 'Analiza 1'), " +
-                    "('ORM', 'Orientacja - M'), " +
-                    "('PPOM', 'Podstawy pomiarów'), " +
-                    "('PRAWO', 'Podstawy prawa - ochrona własności intelektualnej'), " +
-                    "('PRM', 'Podstawy programowania (M)'), " +
-                    "('ULOG', 'Układy logiczne'), " +
-                    "('WF1', 'Wychowanie fizyczne'), " +
+    public final static String TB_ZAJECIA_TEST_INSERTS = "INSERT INTO tb_zajecia (skrot_nazwy_zajec, nazwa_zajec) VALUES "
+            + "('ALGTM', 'Algebra i teoria mnogości'), "
+            + "('ANL1', 'Analiza 1'), " + "('ORM', 'Orientacja - M'), "
+            + "('PPOM', 'Podstawy pomiarów'), "
+            + "('PRAWO', 'Podstawy prawa - ochrona własności intelektualnej'), "
+            + "('PRM', 'Podstawy programowania (M)'), "
+            + "('ULOG', 'Układy logiczne'), "
+            + "('WF1', 'Wychowanie fizyczne 1'), "
+            + "('WFI', 'Wstęp do fizyki'), "
+            + "('AISDI', 'Algorytmy i struktury danych (I)'), "
+            + "('ARKO', 'Architektura komputerów'), "
+            + "('FKS', 'Fizyka kwantowa i statystyczna'), "
+            + "('FPPI', 'Fizyczne podstawy przetwarzania informacji'), "
+            + "('JA', 'Język angielski 2 - poziom B2'), "
+            + "('MPS', 'Metody probabilistyczne i statystyka'), "
+            + "('PTT', 'Podstawy telekomunikacji'), "
+            + "('TSI', 'Teoria sygnałów i informacji'), "
+            + "('WF3', 'Wychowanie fizyczne 3'), "
+            + "('CSK', 'Cyfrowe systemy komórkowe'), "
+            + "('MR', 'Miernictwo radioelektroniczne'), "
+            + "('SYTE', 'Systemy telewizyjne')";
 
-                    "('WFI', 'Wstęp do fizyki')";
-
-    public final static String TB_SALE_TEST_INSERT =
-            "INSERT INTO tb_sale (nazwa_sali, pietro_sali, mapa_x, mapa_y) VALUES" +
-                    "('105-AR', '1', 0, 0)," +
-                    "('011', '0', 0, 0)," +
-                    "('106', '1', 0, 0)," +
-                    "('DS202', '2', 0, 0)," +
-                    "('117', '1', 0, 0)," +
-                    "('120', '1', 0, 0)," +
-                    "('161', '0', 0, 0)," +
-                    "('118-AL', '0', 0, 0)";
-
-    public final static String TB_PLAN_TEST_INS_0 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'W', e.sala_id, 'N' " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id = 8 " +
-                    "AND d.skrot_nazwy_zajec = 'WFI' AND e.nazwa_sali = '105-AR'";
-
-    private final static String TB_PLAN_TEST_INS_1 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'W', e.sala_id, 'N' " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  9 " +
-                    "AND d.skrot_nazwy_zajec = 'WFI' AND e.nazwa_sali = '105-AR'";
-
-
-    private final static String TB_PLAN_TEST_INS_2 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'L', e.sala_id " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  10 " +
-                    "AND d.skrot_nazwy_zajec = 'PRM' AND e.nazwa_sali = '011'";
-
-    private final static String TB_PLAN_TEST_INS_3 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'L', e.sala_id " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  11 " +
-                    "AND d.skrot_nazwy_zajec = 'PRM' AND e.nazwa_sali = '011'";
-
-    private final static String TB_PLAN_TEST_INS_4 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'C', e.sala_id, 'N'" +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  12 " +
-                    "AND d.skrot_nazwy_zajec = 'WFI' AND e.nazwa_sali = '106'";
-
-    private final static String TB_PLAN_TEST_INS_5 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'C', e.sala_id, 'N' " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  13 " +
-                    "AND d.skrot_nazwy_zajec = 'WFI' AND e.nazwa_sali = '106'";
-
-    private final static String TB_PLAN_TEST_INS_6 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'C', e.sala_id, 'P'" +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  12 " +
-                    "AND d.skrot_nazwy_zajec = 'ULOG' AND e.nazwa_sali = '106'";
-
-    private final static String TB_PLAN_TEST_INS_7 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'C', e.sala_id, 'P' " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  13 " +
-                    "AND d.skrot_nazwy_zajec = 'ULOG' AND e.nazwa_sali = '106'";
-
-    private final static String TB_PLAN_TEST_INS_8 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'L', e.sala_id " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  14 " +
-                    "AND d.skrot_nazwy_zajec = 'PPOM' AND e.nazwa_sali = 'DS202'";
-
-    private final static String TB_PLAN_TEST_INS_9 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'L', e.sala_id " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  15 " +
-                    "AND d.skrot_nazwy_zajec = 'PPOM' AND e.nazwa_sali = 'DS202'";
-
-    private final static String TB_PLAN_TEST_INS_10 =
-            "INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id) " +
-                    "SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'L', e.sala_id " +
-                    "FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-                    "WHERE	a.nazwa_grupy = '1E1' " +
-                    "AND b.nazwa_dnia = 'poniedziałek' " +
-                    "AND c.godz_id =  16 " +
-                    "AND d.skrot_nazwy_zajec = 'PPOM' AND e.nazwa_sali = 'DS202'";
-
-
-//	public final static String TB_PLAN_TEST_INS_2T2 = 
-//	"INSERT INTO tb_plan (grupa_id, dzien_tyg_id, godz_id, id_zajec, rodz_zajec, sala_id, parzystosc) " +
-//	"SELECT a.grupa_id, b.dzien_tyg_id, c.godz_id, d.id_zajec, 'W', e.sala_id, 'N' " +
-//	"FROM tb_grupy a, tb_dni_tyg b, tb_godziny c, tb_zajecia d, tb_sale e " +
-//	"WHERE	a.nazwa_grupy = '2T2' " +
-//	"AND b.nazwa_dnia = 'poniedziałek' " +
-//	"AND c.godz_id = 8 " +
-//	"AND d.skrot_nazwy_zajec = 'WFI' AND e.nazwa_sali = '105-AR'";
+    public final static String TB_SALE_TEST_INSERT = "INSERT INTO tb_sale (nazwa_sali, pietro_sali, mapa_x, mapa_y) VALUES "
+            + "('011', -1, 4279, 1992), " + "('04b', -1, 718, 1938), "
+            + "('08', -1, 3641, 1708), " + "('10', 0, 6863, 3000), "
+            + "('102', 1, 652, 2054), " + "('104-AR', 1, 1497, 2618), "
+            + "('105-AR', 1, 1497, 2618), " + "('106', 1, 1909, 1995), "
+            + "('117', 1, 5040, 2011), " + "('118-AL', 1, 5376, 2571), "
+            + "('120', 1, 6020, 1999), " + "('122', 1, 6566, 1997), "
+            + "('133', 1, 5380, 756), " + "('139', 1, 4243, 598), "
+            + "('161', 1, 1505, 782), " + "('164', 1, 711, 870), "
+            + "('168', 1, 351, 890), " + "('277', 2, 733, 479), "
+            + "('313', 3, 2361, 1993), " + "('411', 4, 2168, 1991), "
+            + "('412', 4, 2443, 1990), " + "('418', 4, 4249, 1994), "
+            + "('429', 4, 6613, 1993), " + "('430', 4, 6549, 1823), "
+            + "('?', 0, 0, 0), " + "('DS202', 2, 765, 1991)";
 
     public final static String[] CREATE_TABLE_STATEMENTS = {
             CREATE_TB_PRACOWNICY,
@@ -306,18 +209,7 @@ public final class MyDatabaseUtilities {
             TB_GRUPY_TEST_INSERT_0,
             TB_GRUPY_TEST_INSERT_1,
             TB_ZAJECIA_TEST_INSERTS,
-            TB_SALE_TEST_INSERT,
-            TB_PLAN_TEST_INS_0,
-            TB_PLAN_TEST_INS_1,
-            TB_PLAN_TEST_INS_2,
-            TB_PLAN_TEST_INS_3,
-            TB_PLAN_TEST_INS_4,
-            TB_PLAN_TEST_INS_5,
-            TB_PLAN_TEST_INS_6,
-            TB_PLAN_TEST_INS_7,
-            TB_PLAN_TEST_INS_8,
-            TB_PLAN_TEST_INS_9,
-            TB_PLAN_TEST_INS_10
+            TB_SALE_TEST_INSERT
     };
 
     public final static String[] TABLE_NAMES = {
@@ -354,19 +246,3 @@ public final class MyDatabaseUtilities {
     };
 
 }
-
-/*
-
-//ALGTM		'Algebra i teoria mnogości'								W: Cz 8-10, C: Wt 8-10, Wt 8-10, Pn 14-16, Pn 12-14,
-//ANL1		'Analiza 1'												W: Śr 12-15, C: Wt 10-12, Wt 12-14, Pt 10-12, Wt 10-12,
-//ORM		'Orientacja - M'										W: Śr 15-17,
-//PPOM		'Podstawy pomiarów'										W: Śr 10-12, R: Pt 8-10, L: Wt 12-15, Wt 9-12, Pn 11-14, Pn 14-17,
-//PRAWO		'Podstawy prawa - ochrona własności intelektualnej'		W: Śr 8-10,
-//PRM		'Podstawy programowania (M)'							W: Cz 12-14, L: Pn 14-16, Pn 12-14, Pn 10-12, Pn 16-18,
-
-//WF1		'Wychowanie fizyczne'									C: Pt 12-14,
-//WFI		'Wstęp do fizyki'										W: PnN 8-10, C: PnN 10-12, PnN 12-14, WtN 14-16,
-
-
-*/
-
