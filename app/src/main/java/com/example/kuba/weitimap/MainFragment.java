@@ -26,6 +26,7 @@ public class MainFragment extends Fragment {
     private MainActivity mainActivity;
 
     private enum imageState {ORIENTATION_90, ORIENTATION_0}
+
     private imageState state;
 
 

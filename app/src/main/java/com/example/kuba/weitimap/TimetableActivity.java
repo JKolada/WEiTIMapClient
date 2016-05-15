@@ -74,7 +74,6 @@ public class TimetableActivity extends AppCompatActivity {
             }
         }
 
-
         SharedPreferences prefs = this.getSharedPreferences(MyAndUtils.MY_PREFERENCES, 0);
         SharedPreferences.Editor editor = prefs.edit();
 

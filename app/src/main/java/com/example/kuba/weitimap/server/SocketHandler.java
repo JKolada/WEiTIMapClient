@@ -37,18 +37,18 @@ public class SocketHandler implements Runnable {
             socket.connect(new InetSocketAddress(ipString, Integer.parseInt(portString)), 1000);
             Log.d(TAG, "Created socket");
         } catch (IOException e) {
-            parentActivity. showToast("Connection failed", Toast.LENGTH_SHORT);
+            parentActivity.showToast("Connection failed", Toast.LENGTH_SHORT);
             Log.d(TAG, "Socket connection failed or timeout");
             parentActivity.setDownloadButtonEnable(true);
             e.printStackTrace();
         }
 //            parentActivity.showToast("Connection succeeded", Toast.LENGTH_SHORT);
 
-            if (socket != null) {
-                connection.setSocket(socket);
-                Thread clientThread = new Thread(connection);
-                clientThread.start();
-            }
+        if (socket != null) {
+            connection.setSocket(socket);
+            Thread clientThread = new Thread(connection);
+            clientThread.start();
+        }
 
     }
 

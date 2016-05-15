@@ -52,20 +52,20 @@ public final class MyDatabaseUtilities {
 
     private final static String CREATE_TB_PLAN =
             "CREATE TABLE IF NOT EXISTS tb_plan (" +
-                    "	grupa_id INTEGER NOT NULL,"  +
-                    "	dzien_tyg_id INTEGER NOT NULL,"  +
-                    "	godz_id INTEGER NOT NULL,"  +
-                    "	id_zajec INTEGER NOT NULL,"  +
-                    "	rodz_zajec VARCHAR(1) NOT NULL DEFAULT 'X',"  +
+                    "	grupa_id INTEGER NOT NULL," +
+                    "	dzien_tyg_id INTEGER NOT NULL," +
+                    "	godz_id INTEGER NOT NULL," +
+                    "	id_zajec INTEGER NOT NULL," +
+                    "	rodz_zajec VARCHAR(1) NOT NULL DEFAULT 'X'," +
                     "	sala_id INTEGER NOT NULL," +
-                    "	parzystosc VARCHAR(1) NOT NULL DEFAULT 'X',"  +
-                    "	CHECK (parzystosc = 'P' OR parzystosc = 'N' OR parzystosc = 'X'),"  +
-                    "	CHECK (rodz_zajec IN ('W', 'L', 'C', 'R')),"  +
-                    "	FOREIGN KEY (grupa_id) REFERENCES tb_grupy(grupa_id),"  +
+                    "	parzystosc VARCHAR(1) NOT NULL DEFAULT 'X'," +
+                    "	CHECK (parzystosc = 'P' OR parzystosc = 'N' OR parzystosc = 'X')," +
+                    "	CHECK (rodz_zajec IN ('W', 'L', 'C', 'R'))," +
+                    "	FOREIGN KEY (grupa_id) REFERENCES tb_grupy(grupa_id)," +
                     "	FOREIGN KEY (sala_id) REFERENCES tb_sale(sala_id)," +
-                    "	FOREIGN KEY (dzien_tyg_id) REFERENCES tb_dni_tyg(dzien_tyg_id),"  +
-                    "	FOREIGN KEY (godz_id) REFERENCES tb_godziny(godz_id),"  +
-                    "	FOREIGN KEY (id_zajec) REFERENCES tb_zajecia(id_zajec)"  +
+                    "	FOREIGN KEY (dzien_tyg_id) REFERENCES tb_dni_tyg(dzien_tyg_id)," +
+                    "	FOREIGN KEY (godz_id) REFERENCES tb_godziny(godz_id)," +
+                    "	FOREIGN KEY (id_zajec) REFERENCES tb_zajecia(id_zajec)" +
                     ")";
 
     private final static String CREATE_TB_PLAN_KONSUL =

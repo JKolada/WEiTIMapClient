@@ -13,21 +13,56 @@ public class LectureObj extends LectureParentObj implements Serializable {
     private String parity;
     private String activity_kind;
 
-    public LectureObj() {};
+    public LectureObj() {
+    }
 
-    public void setRoomName(String a) {room_name = a;}
-    public void setDayName(String a) {day_name = a;}
-    public void setHourId(String a) {hour_id = a;}
-    public void setParity(String a) {parity = a;}
-    public void setActivityKind(String a) {activity_kind = a;}
-    public void setActivityName(String a) {activity_name = a;}
+    public void setRoomName(String a) {
+        room_name = a;
+    }
 
-    public String getRoomName() {return room_name;}
-    public String getDayName() {return day_name;}
-    public String getHourId() {return hour_id;}
-    public String getParity() {return parity;}
-    public String getActivityKind() {return activity_kind;}
-    public String getActivityName() {return activity_name;}
+    public void setDayName(String a) {
+        day_name = a;
+    }
+
+    public void setHourId(String a) {
+        hour_id = a;
+    }
+
+    public void setParity(String a) {
+        parity = a;
+    }
+
+    public void setActivityKind(String a) {
+        activity_kind = a;
+    }
+
+    public void setActivityName(String a) {
+        activity_name = a;
+    }
+
+    public String getRoomName() {
+        return room_name;
+    }
+
+    public String getDayName() {
+        return day_name;
+    }
+
+    public String getHourId() {
+        return hour_id;
+    }
+
+    public String getParity() {
+        return parity;
+    }
+
+    public String getActivityKind() {
+        return activity_kind;
+    }
+
+    public String getActivityName() {
+        return activity_name;
+    }
 
     public LectureObj(ArrayList<String> poj_zajęcia) {
         room_name = poj_zajęcia.get(0);

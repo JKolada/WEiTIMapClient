@@ -20,6 +20,7 @@ import com.example.kuba.weitimap.server.SocketHandler;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /**
  * Created by Kuba on 2016-04-27.
  */
@@ -33,8 +34,7 @@ public class DownloadActivity extends Activity {
         final String toastMessage = msg;
         final int toastLength = length;
         runOnUiThread(new Runnable() {
-            public void run()
-            {
+            public void run() {
                 Toast.makeText(DownloadActivity.this, toastMessage, toastLength).show();
             }
         });
@@ -78,8 +78,9 @@ public class DownloadActivity extends Activity {
                 group = groupEditText.getText().toString();
 
                 mHandler = new Handler() {
-                    @Override public void handleMessage(Message msg) {
-                        String mString=(String)msg.obj;
+                    @Override
+                    public void handleMessage(Message msg) {
+                        String mString = (String) msg.obj;
                         Toast.makeText(getApplicationContext(), mString, Toast.LENGTH_LONG).show();
                     }
                 };
@@ -126,7 +127,7 @@ public class DownloadActivity extends Activity {
         thisActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (downloadButton!= null) {
+                if (downloadButton != null) {
                     if (a) {
                         downloadButton.setText("Download group plan");
                         downloadButton.setTextColor(Color.BLACK);
@@ -159,7 +160,7 @@ public class DownloadActivity extends Activity {
         }
 
         Intent i = new Intent(this, TimetableActivity.class);
-        startActivityForResult(i,  MainActivity.REQUEST_CELL_CLICK);
+        startActivityForResult(i, MainActivity.REQUEST_CELL_CLICK);
 
     }
 

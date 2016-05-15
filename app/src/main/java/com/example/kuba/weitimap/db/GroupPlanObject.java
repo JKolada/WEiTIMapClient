@@ -3,7 +3,7 @@ package com.example.kuba.weitimap.db;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GroupPlanObject implements Serializable{
+public class GroupPlanObject implements Serializable {
 
     private static final long serialVersionUID = 2366854110722067579L;
 
@@ -51,7 +51,7 @@ public class GroupPlanObject implements Serializable{
         int row_no, col_no = 0;
         char classesAreEven = 'X';
 
-        for (LectureObj poj_zaj: zajecia) {
+        for (LectureObj poj_zaj : zajecia) {
             Boolean tmp = poj_zaj.isEven();
 
             if (tmp == null) {

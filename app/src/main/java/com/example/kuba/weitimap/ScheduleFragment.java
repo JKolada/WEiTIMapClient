@@ -47,6 +47,7 @@ public class ScheduleFragment extends Fragment {
         mainActivity = (TimetableActivity) getActivity();
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -82,7 +83,7 @@ public class ScheduleFragment extends Fragment {
         View.OnClickListener mainListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            mainActivity.returnWithCellClicked(v.getId(), (String) ((TextView) v).getText());
+                mainActivity.returnWithCellClicked(v.getId(), (String) ((TextView) v).getText());
             }
         };
         plugCellsListener(mainListener);
@@ -117,24 +118,24 @@ public class ScheduleFragment extends Fragment {
         char parChar = getParityChar();
         String RidString;
 
-            RidString = parChar + "_timetable_header";
-            int resID = getResources().getIdentifier(RidString , "id", mainActivity.getPackageName());
+        RidString = parChar + "_timetable_header";
+        int resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
+        ((TextView) timetable.findViewById(resID)).setGravity(Gravity.CENTER);
+
+        for (String s : MyAndUtils.WEEK_DAYS_IDS) {
+            RidString = parChar + "_" + s;
+            resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
             ((TextView) timetable.findViewById(resID)).setGravity(Gravity.CENTER);
+        }
 
-            for (String s: MyAndUtils.WEEK_DAYS_IDS) {
-                RidString = parChar + "_" + s;
-                resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
-                ((TextView) timetable.findViewById(resID)).setGravity(Gravity.CENTER);
-            }
-
-            for (String s: MyAndUtils.HOURS_IDS) {
-                RidString = parChar + s;
-                resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
-                TextView textView = (TextView) timetable.findViewById(resID);
-                textView.setGravity(Gravity.CENTER);
-                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 25, getResources().getDisplayMetrics());
-                textView.setHeight(height);
-            }
+        for (String s : MyAndUtils.HOURS_IDS) {
+            RidString = parChar + s;
+            resID = getResources().getIdentifier(RidString, "id", mainActivity.getPackageName());
+            TextView textView = (TextView) timetable.findViewById(resID);
+            textView.setGravity(Gravity.CENTER);
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 25, getResources().getDisplayMetrics());
+            textView.setHeight(height);
+        }
 
         String Rid_base = "plan_" + parChar + "_";
         for (int row = 1; row < 13; row++) {
@@ -157,7 +158,7 @@ public class ScheduleFragment extends Fragment {
     private void fillCells(GroupPlanObject toFillSchedule) {
 
         char parChar = getParityChar();
-        int resID = getResources().getIdentifier(parChar + "_timetable_header" , "id", mainActivity.getPackageName());
+        int resID = getResources().getIdentifier(parChar + "_timetable_header", "id", mainActivity.getPackageName());
         String header;
         switch (mParity) {
             case EVEN_WEEK:
@@ -171,14 +172,14 @@ public class ScheduleFragment extends Fragment {
 
         List<LectureObj> lectureObjList = toFillSchedule.getLectureArray();
 
-        for (LectureObj a: lectureObjList) {
+        for (LectureObj a : lectureObjList) {
             String[] data = a.getLectureData();
 //            Log.d(TAG, "fillCells: " + data[1] + " " + data[2] + " " + data[3] + " " + data[4] + " " + data[5]);
 
             parChar = Character.toUpperCase(getParityChar());
             String parString = "" + parChar;
 
-            if (data[3].equals("X")){
+            if (data[3].equals("X")) {
                 switch (mParity) {
                     case EVEN_WEEK:
                         data[3] = "P";

@@ -20,7 +20,10 @@ public class PinView extends SubsamplingScaleImageView {
 
     private PointF redPin, bluePin;
     private Bitmap pin_red_bitmap, pin_blue_bitmap;
-    enum pinColor {PIN_RED, PIN_BLUE};
+
+    enum pinColor {PIN_RED, PIN_BLUE}
+
+    ;
     private pinColor colorTemp;
 
 
@@ -60,16 +63,16 @@ public class PinView extends SubsamplingScaleImageView {
 
         if (redPin != null) {
             pin_red_bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.location_red);
-            float w = (density/420f) * pin_red_bitmap.getWidth();
-            float h = (density/420f) * pin_red_bitmap.getHeight();
-            pin_red_bitmap = Bitmap.createScaledBitmap(pin_red_bitmap, (int)w, (int)h, true);
+            float w = (density / 420f) * pin_red_bitmap.getWidth();
+            float h = (density / 420f) * pin_red_bitmap.getHeight();
+            pin_red_bitmap = Bitmap.createScaledBitmap(pin_red_bitmap, (int) w, (int) h, true);
         }
 
         if (bluePin != null) {
             pin_blue_bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.location_blue);
-            float w = (density/420f) * pin_blue_bitmap.getWidth();
-            float h = (density/420f) * pin_blue_bitmap.getHeight();
-            pin_blue_bitmap = Bitmap.createScaledBitmap(pin_blue_bitmap, (int)w, (int)h, true);
+            float w = (density / 420f) * pin_blue_bitmap.getWidth();
+            float h = (density / 420f) * pin_blue_bitmap.getHeight();
+            pin_blue_bitmap = Bitmap.createScaledBitmap(pin_blue_bitmap, (int) w, (int) h, true);
         }
     }
 
@@ -85,14 +88,14 @@ public class PinView extends SubsamplingScaleImageView {
 
         if (redPin != null) {
             PointF vPin = sourceToViewCoord(redPin);
-            float vX = vPin.x - (pin_red_bitmap.getWidth()/2);
+            float vX = vPin.x - (pin_red_bitmap.getWidth() / 2);
             float vY = vPin.y - pin_red_bitmap.getHeight();
             canvas.drawBitmap(pin_red_bitmap, vX, vY, paint);
         }
 
         if (bluePin != null) {
             PointF vPin = sourceToViewCoord(bluePin);
-            float vX = vPin.x - (pin_blue_bitmap.getWidth()/2);
+            float vX = vPin.x - (pin_blue_bitmap.getWidth() / 2);
             float vY = vPin.y - pin_blue_bitmap.getHeight();
             canvas.drawBitmap(pin_blue_bitmap, vX, vY, paint);
         }

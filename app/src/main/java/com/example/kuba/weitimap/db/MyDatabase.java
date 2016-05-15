@@ -18,7 +18,6 @@ public class MyDatabase extends SQLiteOpenHelper {
     private static String group;
 
     private volatile SQLiteDatabase mDB;
-//    private int db_errors_num = 0;
 
     public static synchronized MyDatabase getInstance(Context context) {
         if (mInstance == null) {
@@ -33,7 +32,6 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // checkTables(true);
         mDB = db;
         setDatabase();
 
@@ -50,86 +48,32 @@ public class MyDatabase extends SQLiteOpenHelper {
         resetDB(db);
     }
 
-//    Boolean isSet() {
-//        return isSet;
-//    }
 
     private void setDatabase() {
-        for (String i: MyDatabaseUtilities.CREATE_TABLE_STATEMENTS)
+        for (String i : MyDatabaseUtilities.CREATE_TABLE_STATEMENTS)
             mDB.execSQL(i);
 
-        for (String i: MyDatabaseUtilities.CREATE_VIEW_STATEMENTS)
+        for (String i : MyDatabaseUtilities.CREATE_VIEW_STATEMENTS)
             mDB.execSQL(i);
 
-        for (String i: MyDatabaseUtilities.INSERT_INTO_STATEMENT_LIST)
+        for (String i : MyDatabaseUtilities.INSERT_INTO_STATEMENT_LIST)
             mDB.execSQL(i);
     }
 
-//    private int checkTables (boolean reset) {
-//        return checkTables(reset, "ALL");
-//    }
-
-//    private int checkTables (boolean reset, String table_name_to_drop) {
-//        ResultSet result;
-//        int table_num = 0;
-//        String table_name_temp;
-//        try {
-//            result = mConnection.createStatement().executeQuery("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name");
-//            while(result.next()) {
-//                table_name_temp = result.getString("name");
-//                System.out.println(table_name_temp + " exists.");
-//                table_num++;
-//                if (reset = true) {
-//                    if ((table_name_to_drop.equals(table_name_temp)) || (table_name_to_drop.equals("ALL")))
-////                        mConnection.createStatement().execute("DROP TABLE " + table_name_temp);
-//                    System.out.println(table_name_temp + " has been dropped.");
-//                    table_num--;
-//                }
-//                result.close();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            db_errors_num++ ;
-//        }
-//
-//        if (table_num > 0) {
-//            System.out.println("Error: Some tables still exist." );
-//        }
-//        return table_num;
-//
-//
-//    }
-
     private void resetDB(SQLiteDatabase db) {
-        for(String i: MyDatabaseUtilities.TABLE_NAMES) {
+        for (String i : MyDatabaseUtilities.TABLE_NAMES) {
             db.execSQL("DROP TABLE IF EXISTS " + i);
         }
 
-        for(String i: MyDatabaseUtilities.TABLE_NAMES) {
+        for (String i : MyDatabaseUtilities.TABLE_NAMES) {
             db.execSQL("DROP VIEW IF EXISTS " + i);
         }
     }
 
-//    public String[] getGroupNames() {
-//        String query = "SELECT nazwa_grupy FROM tb_grupy";
-//        List<String> nazwy_grup = new ArrayList<String>();
-//        try {
-//            ResultSet nazwy_grup_rs = mConnection.createStatement().executeQuery(query);
-//            while (nazwy_grup_rs.next() ) {
-//                nazwy_grup.add(nazwy_grup_rs.getString("nazwa_grupy"));
-//            }
-//            nazwy_grup_rs.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return nazwy_grup.toArray(new String[nazwy_grup.size()]);
-//    }
-//
-
     public int[] getRoomDetails(String room_name) {
         int[] returnData = new int[3];
 
-        String query = "SELECT pietro_sali, mapa_x, mapa_y FROM tb_sale WHERE nazwa_sali = '" + room_name +"'";
+        String query = "SELECT pietro_sali, mapa_x, mapa_y FROM tb_sale WHERE nazwa_sali = '" + room_name + "'";
         mDB = getReadableDatabase();
         Cursor c = mDB.rawQuery(query, null);
 
@@ -150,14 +94,14 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     public GroupPlanObject getGroupPlanObject(String group_name) {
         mDB = getReadableDatabase();
-        String query = "SELECT * FROM vw_plan WHERE nazwa_grupy = '" + group_name +"'";
+        String query = "SELECT * FROM vw_plan WHERE nazwa_grupy = '" + group_name + "'";
         GroupPlanObject groupObject = null;
         Cursor c = mDB.rawQuery(query, null);
 
         groupObject = new GroupPlanObject(group_name);
 //        Log.d(TAG, "getGroupPlanObject: " + group_name);
         if (c != null && c.moveToFirst()) {
-            do  {
+            do {
                 List<String> pojedyncze_zajecia = new ArrayList<String>();
                 for (int k = 1; k < MyDatabaseUtilities.PLAN_VIEW_COL_NAMES.length; k++) {
                     pojedyncze_zajecia.add(c.getString(k));
@@ -217,12 +161,12 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     public LectureObj getLectureObj(String groupName, int hour_of_day, char par, String day_name) {
         String query =
-        "SELECT * FROM vw_plan " +
-        "WHERE nazwa_grupy = '" + groupName + "' " +
-        "AND godz_id >= " + hour_of_day + " " +
-        "AND parzystosc IN ('X', '" + par + "') " +
-        "AND nazwa_dnia = '" + day_name + "' " +
-        "ORDER BY godz_id ASC";
+                "SELECT * FROM vw_plan " +
+                        "WHERE nazwa_grupy = '" + groupName + "' " +
+                        "AND godz_id >= " + hour_of_day + " " +
+                        "AND parzystosc IN ('X', '" + par + "') " +
+                        "AND nazwa_dnia = '" + day_name + "' " +
+                        "ORDER BY godz_id ASC";
 
         mDB = getReadableDatabase();
         Cursor c = mDB.rawQuery(query, null);

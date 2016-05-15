@@ -86,13 +86,15 @@ public class ClientGetGroupTask implements Runnable {
         sendMessage(new MyMessage(MyMessage.MessageType.HANDSHAKE));
 
         MyMessage handshakeMsg;
-        while ((handshakeMsg = receiveMessageObj()) == null) {}
+        while ((handshakeMsg = receiveMessageObj()) == null) {
+        }
 
         if (handshakeMsg.getType() == MyMessage.MessageType.HANDSHAKE) {
             sendMessage(new MyMessage(MyMessage.MessageType.GET_GROUP, groupName));
 
             MyMessage doesGroupExists;
-            while ((doesGroupExists = receiveMessageObj()) == null) {}
+            while ((doesGroupExists = receiveMessageObj()) == null) {
+            }
 
             switch (doesGroupExists.getParam()) {
                 case MyAndUtils.GROUP_DOESNT_EXIST:
@@ -111,7 +113,8 @@ public class ClientGetGroupTask implements Runnable {
             try {
                 objIn = new ObjectInputStream(mySocket.getInputStream());
                 GroupPlanObject gotGroup;
-                while ((gotGroup = (GroupPlanObject) objIn.readObject()) == null) {}
+                while ((gotGroup = (GroupPlanObject) objIn.readObject()) == null) {
+                }
                 Log.d(TAG, "Got GroupPlanObject for " + gotGroup.getGroupName() + " group.");
                 parentActivity.showToast(groupName + " group plan received", Toast.LENGTH_LONG);
                 objIn.close();
@@ -137,7 +140,7 @@ public class ClientGetGroupTask implements Runnable {
         sendMessageBytes(msg.toString());
     }
 
-    private void sendMessageBytes(String message){
+    private void sendMessageBytes(String message) {
         byte[] msgBytes = message.getBytes();
 //        String hexString = MyAndUtils.bytesToHex(msgBytes);
 //        Log.d(TAG, "Hex of actual message:" + hexString);
@@ -146,8 +149,8 @@ public class ClientGetGroupTask implements Runnable {
 //        hexString = MyAndUtils.bytesToHex(msgLengthBytes);
 //        Log.d(TAG, "Hex of string length:" + hexString);
         byte[] combined = new byte[msgLengthBytes.length + msgBytes.length];
-        System.arraycopy(msgLengthBytes, 0, combined, 0                    , msgLengthBytes.length);
-        System.arraycopy(msgBytes,       0, combined, msgLengthBytes.length, msgBytes.length);
+        System.arraycopy(msgLengthBytes, 0, combined, 0, msgLengthBytes.length);
+        System.arraycopy(msgBytes, 0, combined, msgLengthBytes.length, msgBytes.length);
 //        hexString = MyAndUtils.bytesToHex(combined);
 //        Log.d(TAG, "Hex of overall message:" + hexString);
         try {

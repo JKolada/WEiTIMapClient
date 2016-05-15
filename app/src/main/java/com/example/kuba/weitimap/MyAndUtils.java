@@ -23,21 +23,21 @@ public class MyAndUtils {
     public final static String HANDSHAKE_MSG_TYPE = "HANDSHAKE";
     public final static String GET_GROUP_MSG_TYPE = "GET_GROUP";
     public final static String SEND_GROUP_MSG_TYPE = "SEND_GROUP";
-    public final static String MSG_TYPES_REGEXP =   HANDSHAKE_MSG_TYPE + '|' +
-                                                    GET_GROUP_MSG_TYPE + '|' +
-                                                    SEND_GROUP_MSG_TYPE;
+    public final static String MSG_TYPES_REGEXP = HANDSHAKE_MSG_TYPE + '|' +
+            GET_GROUP_MSG_TYPE + '|' +
+            SEND_GROUP_MSG_TYPE;
 
     public final static String MAIN_FRAGMENT_TAG = "MAIN_FRAGMENT_TAG";
 
     public final static String[] WEEK_DAYS_IDS = {"mon", "tue", "wed", "thu", "fri"};
     public final static String[] HOURS_IDS = {"_8_9", "_9_10", "_10_11", "_11_12", "_12_13",
-                            "_13_14", "_14_15", "_15_16", "_16_17", "_17_18", "_18_19", "_19_20"};
+            "_13_14", "_14_15", "_15_16", "_16_17", "_17_18", "_18_19", "_19_20"};
 
     private final static char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
-        for ( int j = 0; j < bytes.length; j++ ) {
+        for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
             hexChars[j * 2] = HEX_ARRAY[v >>> 4];
             hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
@@ -53,7 +53,7 @@ public class MyAndUtils {
 
 
     public final static String[] FLOOR_MAP_NAMES =
-                    {"piwnica.jpg",
+            {"piwnica.jpg",
                     "parter.jpg",
                     "pietro1.jpg",
                     "pietro2.jpg",

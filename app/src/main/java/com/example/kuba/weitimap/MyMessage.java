@@ -2,16 +2,20 @@ package com.example.kuba.weitimap;
 
 import android.util.Log;
 
-public class MyMessage
-{
+public class MyMessage {
     private static final String TAG = "MessageTAG";
-    public enum MessageType {HANDSHAKE, GET_GROUP, SEND_GROUP};
+
+    public enum MessageType {HANDSHAKE, GET_GROUP, SEND_GROUP}
+
+    ;
     private MessageType MsgType;
     private String param;
     private String allMessage;
     private boolean isValid;
 
-    public MessageType getMsgType() {return MsgType;}
+    public MessageType getMsgType() {
+        return MsgType;
+    }
 
     public MyMessage(MessageType msgtyp) {
         MsgType = msgtyp;
@@ -38,8 +42,7 @@ public class MyMessage
             } else {
                 printStatus();
             }
-        }
-        else if (msgtyp.equals(MyAndUtils.GET_GROUP_MSG_TYPE))
+        } else if (msgtyp.equals(MyAndUtils.GET_GROUP_MSG_TYPE))
             MsgType = MessageType.GET_GROUP;
         else if (msgtyp.equals(MyAndUtils.SEND_GROUP_MSG_TYPE))
             MsgType = MessageType.SEND_GROUP;
@@ -83,7 +86,9 @@ public class MyMessage
             return null;
     }
 
-    public boolean isValid() {return isValid;}
+    public boolean isValid() {
+        return isValid;
+    }
 
     private void printStatus() {
         if (isValid == true)
