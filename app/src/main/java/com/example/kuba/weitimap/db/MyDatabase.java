@@ -159,6 +159,30 @@ public class MyDatabase extends SQLiteOpenHelper {
         mDB.execSQL(query);
     }
 
+
+    public boolean wereThereAnyClassesToday(String groupName, int hour_of_day, char par, String day_name) {
+        String query =
+                "SELECT COUNT(godz_id) FROM vw_plan " +
+                        "WHERE nazwa_grupy = '" + groupName + "' " +
+                        "AND godz_id < " + hour_of_day + " " +
+                        "AND parzystosc IN ('X', '" + par + "') " +
+                        "AND nazwa_dnia = '" + day_name + "'";
+
+        mDB = getReadableDatabase();
+        Cursor c = mDB.rawQuery(query, null);
+
+        if (c != null && c.moveToFirst()) {
+            Log.d(TAG, "Number of finished activities today: " + c.getInt(0));
+            if (c.getInt(0) != 0) return true;
+            else return false;
+        } else {
+            Log.d(TAG, "ERROR");
+        }
+        c.close();
+        mDB.close();
+        return false;
+    }
+
     public LectureObj getLectureObj(String groupName, int hour_of_day, char par, String day_name) {
         String query =
                 "SELECT * FROM vw_plan " +

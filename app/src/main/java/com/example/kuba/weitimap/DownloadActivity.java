@@ -90,7 +90,7 @@ public class DownloadActivity extends Activity {
                 Matcher m = p.matcher(ip);
 
                 if (!m.matches()) {
-                    message = "Invalid ip address";
+                    message = "Invalid IP address";
                 }
 
                 p = Pattern.compile(MyAndUtils.PORT_REGEXP);
@@ -120,6 +120,13 @@ public class DownloadActivity extends Activity {
             }
 
         });
+    }
+
+    @Override
+    public void onPause() {
+        setResult(RESULT_CANCELED);
+        finish();
+        super.onPause();
     }
 
     public void setDownloadButtonEnable(boolean only_truth) {

@@ -47,6 +47,13 @@ public class TimetableActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+        setResult(RESULT_CANCELED);
+        finish();
+        super.onPause();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             setResult(RESULT_CANCELED);

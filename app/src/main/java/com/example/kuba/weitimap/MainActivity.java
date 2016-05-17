@@ -86,8 +86,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        super.onResume();
         setRedNavPin();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        super.onPause();
     }
 
     @Override
@@ -97,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -140,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else {
+            setRedNavPin();
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -261,6 +272,9 @@ public class MainActivity extends AppCompatActivity {
         String groupName = prefs.getString(MyAndUtils.LAST_INSERTED_GROUP_NAME, "null");
 
         if (groupName == "null") {
+            if (navigationView != null) {
+                navigationView.getMenu().getItem(0).setTitle("No group plan inserted");
+            }
             removeRedPref();
             return;
         }
@@ -271,22 +285,22 @@ public class MainActivity extends AppCompatActivity {
         int day_of_month = c.get(Calendar.DAY_OF_MONTH);
 
         char par;
-//        if
-//                (
-//                    (month == Calendar.MAY && ((day_of_month >= 16 && day_of_month <= 20) || (day_of_month >= 30)) )
-//                    || (month == Calendar.JUNE && (day_of_month >= 13 && day_of_month <= 14))
-//                )
-//            par = 'P';
-//        else if
-//                (
-//                    (month == Calendar.MAY && ((day_of_month >= 23 && day_of_month <= 27)))
-//                    || (month == Calendar.JUNE && ((day_of_month >= 6 && day_of_month <= 10) || (day_of_month >= 15 && day_of_month <= 16)))
-//                )
-//            par = 'N';
-//        else {
-//        removeRedPref();
-//           return;
-//    }
+        if
+                (
+                (month == Calendar.MAY && ((day_of_month >= 16 && day_of_month <= 20) || (day_of_month >= 30)))
+                        || (month == Calendar.JUNE && (day_of_month >= 13 && day_of_month <= 14))
+                )
+            par = 'P';
+        else if
+                (
+                (month == Calendar.MAY && ((day_of_month >= 23 && day_of_month <= 27)))
+                        || (month == Calendar.JUNE && ((day_of_month >= 6 && day_of_month <= 10) || (day_of_month >= 15 && day_of_month <= 16)))
+                )
+            par = 'N';
+        else {
+            removeRedPref();
+            return;
+        }
 
         int hour_of_day = c.get(Calendar.HOUR_OF_DAY);
 
@@ -313,36 +327,32 @@ public class MainActivity extends AppCompatActivity {
                 day_name = "piątek";
                 break;
             default:
-                day_name = "";
-//                removeRedPref();
-//                return;
-
+                removeRedPref();
+                return;
         }
 
-//        if (navigationView != null) {
-//            if (hour_of_day < 5) {
-//                navigationView.getMenu().getItem(0).setTitle("It's too early");
-//                removeRedPref();
-//                return;
-//            } else if (hour_of_day > 19) {
-//                navigationView.getMenu().getItem(0).setTitle("It's after classes");
-//                removeRedPref();
-//                return;
-//            }
-//        }
-
         if (hour_of_day < 8) hour_of_day = 8;
+        else if (hour_of_day > 19) {
+            navigationView.getMenu().getItem(0).setTitle("It's after classes");
+            removeRedPref();
+            return;
+        }
 
-        par = 'N';
-        Log.d(TAG, "getLectureObj: " + groupName + " " + hour_of_day + " " + par + " " + day_name); //TODO DELETE
+//        Log.d(TAG, "getLectureObj: " + hour_of_day + " " + par + " " + day_name);
         mDB = MyDatabase.getInstance(getApplicationContext());
 
-        hour_of_day = 5;
-        par = 'P';
-        day_name = "poniedziałek"; //TODO DELETE
-
+        boolean b = mDB.wereThereAnyClassesToday(groupName, hour_of_day, par, day_name);
         LectureObj lecture = mDB.getLectureObj(groupName, hour_of_day, par, day_name);
-        // TODO obsługa gdy w ciągu całego dnia nie ma zajęć
+
+        if (lecture == null && navigationView != null) {
+            if (b == false) {
+                navigationView.getMenu().getItem(0).setTitle("No classes today");
+            } else {
+                navigationView.getMenu().getItem(0).setTitle("It's after classes today");
+            }
+            removeRedPref();
+            return;
+        }
 
         String[] lectureData = new String[6];
         if (lecture == null) {
@@ -358,7 +368,6 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, lectureData[0] + " " + lectureData[1] + " " + lectureData[2] + " " + lectureData[3] + " " + lectureData[4] + " " + lectureData[5]);
             //{nazwa_sali, nazwa_dnia, id_godziny, parzystość, skrót_nazwy_zajęć, rodz_zajęć};
-
 
             if (navigationView != null) {
                 navigationView.getMenu().getItem(0).setTitle(lectureData[2] + ":15 " + lectureData[4] + " " + lectureData[5] + " " + lectureData[0]);
