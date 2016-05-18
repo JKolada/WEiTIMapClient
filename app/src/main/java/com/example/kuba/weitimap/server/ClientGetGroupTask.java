@@ -109,7 +109,7 @@ public class ClientGetGroupTask implements Runnable {
                     shutdown(CRITICAL_ERROR, Toast.LENGTH_LONG);
                     return;
             }
-
+            sendMessage(new MyMessage(MyMessage.MessageType.GET_GROUP, groupName));
             try {
                 objIn = new ObjectInputStream(mySocket.getInputStream());
                 GroupPlanObject gotGroup;
